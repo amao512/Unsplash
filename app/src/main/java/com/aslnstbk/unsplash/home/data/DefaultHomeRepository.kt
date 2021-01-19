@@ -1,8 +1,8 @@
 package com.aslnstbk.unsplash.home.data
 
 import com.aslnstbk.unsplash.common.data.model.RetrofitDataSource
-import com.aslnstbk.unsplash.common.models.Photo
-import com.aslnstbk.unsplash.common.models.api.PhotoApiData
+import com.aslnstbk.unsplash.common.data.models.Photo
+import com.aslnstbk.unsplash.common.data.models.api.PhotoApiData
 import com.aslnstbk.unsplash.home.domain.HomeRepository
 import com.aslnstbk.unsplash.utils.mappers.PhotoApiDataMapper
 import retrofit2.Call

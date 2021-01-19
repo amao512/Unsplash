@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
-import com.aslnstbk.unsplash.common.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Photo
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

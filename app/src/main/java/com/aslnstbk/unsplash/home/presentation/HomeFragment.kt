@@ -17,6 +17,8 @@ import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
 import com.aslnstbk.unsplash.main.MainActivity
+import com.aslnstbk.unsplash.main.MainRouter
+import com.aslnstbk.unsplash.navigation.Navigation
 import com.aslnstbk.unsplash.utils.hide
 import com.aslnstbk.unsplash.utils.show
 import org.koin.android.ext.android.inject
@@ -26,6 +28,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
 
     private val homeViewModel: HomeViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
+    private val navigation: Navigation by inject()
+    private val mainRouter: MainRouter by inject()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var failTextView: TextView
@@ -53,9 +57,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
         args.putString(IMAGE_ID_BUNDLE_KEY, imageId)
         imageDetailsFragment.arguments = args
 
-        (activity as MainActivity).supportFragmentManager.beginTransaction()
-            .replace(R.id.activity_main_fragment_container, imageDetailsFragment)
-            .commit()
+        navigation.navigate(
+            mainRouter.setScreen(
+                fragment = imageDetailsFragment,
+                isBackStack = true
+            )
+        )
     }
 
     private fun initViews(view: View) {

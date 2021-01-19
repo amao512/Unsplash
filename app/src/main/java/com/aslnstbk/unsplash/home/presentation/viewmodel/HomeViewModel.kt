@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
-import com.aslnstbk.unsplash.common.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Photo
 import com.aslnstbk.unsplash.home.domain.HomeRepository
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.models.PhotoListItem

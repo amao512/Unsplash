@@ -1,6 +1,6 @@
 package com.aslnstbk.unsplash.image_details.data
 
-import com.aslnstbk.unsplash.common.models.api.PhotoApiData
+import com.aslnstbk.unsplash.common.data.models.api.PhotoApiData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

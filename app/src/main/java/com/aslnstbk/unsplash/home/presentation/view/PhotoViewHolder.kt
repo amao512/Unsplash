@@ -4,9 +4,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.aslnstbk.unsplash.R
-import com.aslnstbk.unsplash.common.data.DefaultImageLoader
 import com.aslnstbk.unsplash.common.domain.ImageLoader
-import com.aslnstbk.unsplash.common.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Photo
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.models.PhotoListItem

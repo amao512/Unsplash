@@ -1,7 +1,7 @@
 package com.aslnstbk.unsplash.utils.mappers
 
-import com.aslnstbk.unsplash.common.models.PhotoUser
-import com.aslnstbk.unsplash.common.models.api.PhotoUserApiData
+import com.aslnstbk.unsplash.common.data.models.PhotoUser
+import com.aslnstbk.unsplash.common.data.models.api.PhotoUserApiData
 
 class PhotoUserApiDataMapper(
     private val userProfileImageApiDataMapper: UserProfileImageApiDataMapper

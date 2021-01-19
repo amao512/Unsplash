@@ -1,7 +1,7 @@
 package com.aslnstbk.unsplash.utils.mappers
 
-import com.aslnstbk.unsplash.common.models.PhotoUrls
-import com.aslnstbk.unsplash.common.models.api.PhotoUrlsApiData
+import com.aslnstbk.unsplash.common.data.models.PhotoUrls
+import com.aslnstbk.unsplash.common.data.models.api.PhotoUrlsApiData
 
 class PhotoUrlsApiDataMapper {
 

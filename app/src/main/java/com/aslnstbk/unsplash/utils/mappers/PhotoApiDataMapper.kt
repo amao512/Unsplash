@@ -1,7 +1,7 @@
 package com.aslnstbk.unsplash.utils.mappers
 
-import com.aslnstbk.unsplash.common.models.*
-import com.aslnstbk.unsplash.common.models.api.PhotoApiData
+import com.aslnstbk.unsplash.common.data.models.*
+import com.aslnstbk.unsplash.common.data.models.api.PhotoApiData
 
 const val EMPTY_STRING = ""
 const val DEFAULT_INT = 0

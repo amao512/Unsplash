@@ -5,19 +5,24 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.home.presentation.HomeFragment
+import com.aslnstbk.unsplash.navigation.Navigation
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
+
+    private val navigation: Navigation by inject()
+    private val mainRouter: MainRouter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        navigation.init(activity = this)
+
         replaceFragment(HomeFragment())
     }
 
-    private fun replaceFragment(fragment: Fragment){
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.activity_main_fragment_container, fragment)
-            .commit()
-    }
+    private fun replaceFragment(fragment: Fragment) = navigation.navigate(
+        mainRouter.setScreen(fragment)
+    )
 }

@@ -1,6 +1,6 @@
 package com.aslnstbk.unsplash.image_details.domain
 
-import com.aslnstbk.unsplash.common.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Photo
 
 interface ImageDetailsRepository {
 

@@ -1,4 +1,4 @@
-package com.aslnstbk.unsplash.common.models
+package com.aslnstbk.unsplash.common.data.models
 
 data class Photo(
     val id: String,

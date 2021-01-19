@@ -1,7 +1,7 @@
 package com.aslnstbk.unsplash.home.domain
 
 import androidx.annotation.WorkerThread
-import com.aslnstbk.unsplash.common.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Photo
 
 interface HomeRepository {
 

@@ -1,4 +1,4 @@
-package com.aslnstbk.unsplash.common.models.api
+package com.aslnstbk.unsplash.common.data.models.api
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
