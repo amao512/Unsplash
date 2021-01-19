@@ -5,7 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Photo
+import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ImageDetailsViewModel(
     private val imageDetailsRepository: ImageDetailsRepository
@@ -14,7 +18,7 @@ class ImageDetailsViewModel(
     val imageLiveData: MutableLiveData<ResponseData<Photo, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
-    fun onStart(photoId: String){
+    fun onStart(photoId: String) {
         progressLiveData.value = ProgressState.Loading
 
         imageDetailsRepository.getPhotoById(
@@ -27,6 +31,19 @@ class ImageDetailsViewModel(
                 imageLiveData.value = ResponseData.Error(it.toString())
                 progressLiveData.value = ProgressState.Done
             }
+        )
+    }
+
+    fun addFavoriteImage(
+        imageId: String,
+        imageUrl: String,
+    ) = CoroutineScope(Dispatchers.IO).launch {
+        imageDetailsRepository.addFavoriteImage(
+            FavoriteImage(
+                id = 0,
+                imageId = imageId,
+                imageUrl = imageUrl
+            )
         )
     }
 }

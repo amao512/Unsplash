@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.view.ToolbarBuilder
+import com.aslnstbk.unsplash.favorite_images.presentation.FavoriteImagesFragment
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.view.PhotosAdapter
@@ -32,6 +34,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     private val imageLoader: ImageLoader by inject()
     private val navigation: Navigation by inject()
     private val mainRouter: MainRouter by inject()
+
+    private lateinit var toolbar: Toolbar
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var failTextView: TextView
@@ -76,10 +80,23 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     }
 
     private fun buildToolbar(){
-        ToolbarBuilder()
+        toolbar = ToolbarBuilder()
             .setNavigationIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_app_logo))
             .setMenu(R.menu.toolbar_menu)
             .build(activity = APP_ACTIVITY)
+
+        toolbar.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.toolbar_menu_favorites_item -> navigation.navigate(
+                    mainRouter.setScreen(
+                        fragment = FavoriteImagesFragment(),
+                        isBackStack = true
+                    )
+                )
+            }
+
+            true
+        }
     }
 
     private fun observeLiveData() {

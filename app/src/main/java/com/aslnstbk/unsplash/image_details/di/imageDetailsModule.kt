@@ -1,6 +1,6 @@
 package com.aslnstbk.unsplash.image_details.di
 
-import com.aslnstbk.unsplash.common.data.model.RetrofitClient
+import com.aslnstbk.unsplash.common.data.retrofit.RetrofitClient
 import com.aslnstbk.unsplash.image_details.data.DefaultImageDetailsRepository
 import com.aslnstbk.unsplash.image_details.data.ImageDetailsDataSource
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
@@ -26,6 +26,7 @@ val imageDetailsModule = module {
     factory {
         DefaultImageDetailsRepository(
             imageDetailsDataSource = get(),
+            appDatabase = get(),
             photoApiDataMapper = get()
         ) as ImageDetailsRepository
     }

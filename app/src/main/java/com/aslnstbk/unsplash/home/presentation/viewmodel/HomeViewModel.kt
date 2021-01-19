@@ -42,7 +42,10 @@ class HomeViewModel(
 
     private fun getPhotoListItems(photoList: List<Photo>): List<HomeListItem> {
         return photoList.map {
-            PhotoListItem(data = it)
+            PhotoListItem(
+                imageId = it.id,
+                imageUrl = it.urls.regular
+            )
         }
     }
 }

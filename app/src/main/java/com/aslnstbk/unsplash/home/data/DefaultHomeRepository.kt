@@ -1,6 +1,6 @@
 package com.aslnstbk.unsplash.home.data
 
-import com.aslnstbk.unsplash.common.data.model.RetrofitDataSource
+import com.aslnstbk.unsplash.common.data.retrofit.RetrofitDataSource
 import com.aslnstbk.unsplash.common.data.models.Photo
 import com.aslnstbk.unsplash.common.data.models.api.PhotoApiData
 import com.aslnstbk.unsplash.home.domain.HomeRepository

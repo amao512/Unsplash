@@ -1,4 +1,4 @@
-package com.aslnstbk.unsplash.common.data.model
+package com.aslnstbk.unsplash.common.data.retrofit
 
 import com.aslnstbk.unsplash.common.data.models.api.PhotoApiData
 import retrofit2.Call

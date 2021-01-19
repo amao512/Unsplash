@@ -1,4 +1,4 @@
-package com.aslnstbk.unsplash.common.data.model
+package com.aslnstbk.unsplash.common.data.retrofit
 
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient

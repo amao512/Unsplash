@@ -1,7 +1,5 @@
 package com.aslnstbk.unsplash.home.presentation.models
 
-import com.aslnstbk.unsplash.common.data.models.Photo
-
 const val PHOTOS_LIST_ITEM_TYPE = 0
 const val SEARCH_BAR_ITEM_TYPE = 1
 
@@ -10,7 +8,8 @@ sealed class HomeListItem(
 )
 
 class PhotoListItem(
-    val data: Photo
+    val imageId: String,
+    val imageUrl: String
 ): HomeListItem(PHOTOS_LIST_ITEM_TYPE)
 
 class SearchBarItem(

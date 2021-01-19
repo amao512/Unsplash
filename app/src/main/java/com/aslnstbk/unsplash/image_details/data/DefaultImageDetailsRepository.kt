@@ -2,6 +2,8 @@ package com.aslnstbk.unsplash.image_details.data
 
 import com.aslnstbk.unsplash.common.data.models.Photo
 import com.aslnstbk.unsplash.common.data.models.api.PhotoApiData
+import com.aslnstbk.unsplash.common.data.room.AppDatabase
+import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
 import com.aslnstbk.unsplash.utils.mappers.PhotoApiDataMapper
 import retrofit2.Call
@@ -10,6 +12,7 @@ import retrofit2.Response
 
 class DefaultImageDetailsRepository(
     private val imageDetailsDataSource: ImageDetailsDataSource,
+    private val appDatabase: AppDatabase,
     private val photoApiDataMapper: PhotoApiDataMapper
 ) : ImageDetailsRepository {
 
@@ -37,5 +40,9 @@ class DefaultImageDetailsRepository(
                     fail(t.localizedMessage)
                 }
             })
+    }
+
+    override suspend fun addFavoriteImage(favoriteImage: FavoriteImage) {
+        appDatabase.favoriteImageDao().insert(favoriteImage)
     }
 }

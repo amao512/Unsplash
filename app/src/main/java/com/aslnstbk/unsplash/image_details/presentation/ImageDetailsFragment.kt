@@ -2,9 +2,7 @@ package com.aslnstbk.unsplash.image_details.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -37,6 +35,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     private lateinit var ownerFullNameTextView: TextView
     private lateinit var ownerEmailTextView: TextView
     private lateinit var imageImageView: ImageView
+    private lateinit var favoriteButton: ImageButton
     private lateinit var failTextView: TextView
     private lateinit var progressBar: ProgressBar
 
@@ -63,6 +62,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         ownerFullNameTextView = view.findViewById(R.id.fragment_image_details_image_owner_full_name)
         ownerEmailTextView = view.findViewById(R.id.fragment_image_details_image_owner_email)
         imageImageView = view.findViewById(R.id.fragment_image_details_image)
+        favoriteButton = view.findViewById(R.id.fragment_image_details_button_favorite)
         failTextView = APP_ACTIVITY.findViewById(R.id.activity_main_fail)
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
     }
@@ -103,6 +103,13 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         )
 
         view?.show()
+
+        favoriteButton.setOnClickListener {
+            imageDetailsViewModel.addFavoriteImage(
+                imageId = getImageIdFromBundle(),
+                imageUrl = photo.urls.regular
+            )
+        }
     }
 
     private fun handleProgress(progressState: ProgressState) {

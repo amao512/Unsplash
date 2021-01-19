@@ -1,9 +1,11 @@
 package com.aslnstbk.unsplash.di
 
 import com.aslnstbk.unsplash.common.data.DefaultImageLoader
-import com.aslnstbk.unsplash.common.data.model.RetrofitClient
-import com.aslnstbk.unsplash.common.data.model.RetrofitDataSource
+import com.aslnstbk.unsplash.common.data.retrofit.RetrofitClient
+import com.aslnstbk.unsplash.common.data.retrofit.RetrofitDataSource
+import com.aslnstbk.unsplash.common.data.room.AppDatabase
 import com.aslnstbk.unsplash.common.domain.ImageLoader
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val applicationModule = module {
@@ -11,6 +13,12 @@ val applicationModule = module {
         val retrofit = RetrofitClient.instance
 
         retrofit.create(RetrofitDataSource::class.java)
+    }
+
+    single {
+        AppDatabase.getInstance(
+            context = androidContext()
+        )
     }
 
     factory {
