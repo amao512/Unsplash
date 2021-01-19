@@ -35,4 +35,24 @@ class PhotoApiDataMapper(
             )
         }
     }
+
+    fun map(photoApiData: PhotoApiData?): Photo {
+        return Photo(
+            id = photoApiData?.id ?: EMPTY_STRING,
+            created_at = photoApiData?.created_at ?: EMPTY_STRING,
+            updated_at = photoApiData?.updated_at ?: EMPTY_STRING,
+            promoted_at = photoApiData?.promoted_at ?: EMPTY_STRING,
+            width = photoApiData?.width ?: DEFAULT_INT,
+            height = photoApiData?.height ?: DEFAULT_INT,
+            color = photoApiData?.color ?: EMPTY_STRING,
+            blur_hash = photoApiData?.blur_hash ?: EMPTY_STRING,
+            description = photoApiData?.description ?: EMPTY_STRING,
+            alt_description = photoApiData?.alt_description ?: EMPTY_STRING,
+            urls = photoUrlsApiDataMapper.map(photoApiData?.urls),
+            links = photoLinksApiDataMapper.map(photoApiData?.links),
+            categories = photoApiData?.categories ?: EMPTY_STRING,
+            likes = photoApiData?.likes ?: DEFAULT_INT,
+            user = photoUserApiDataMapper.map(photoApiData?.user)
+        )
+    }
 }

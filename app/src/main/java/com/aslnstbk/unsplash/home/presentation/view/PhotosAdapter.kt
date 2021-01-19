@@ -4,10 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aslnstbk.unsplash.R
+import com.aslnstbk.unsplash.common.domain.ImageLoader
+import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.models.SEARCH_BAR_ITEM_TYPE
 
-class PhotosAdapter : RecyclerView.Adapter<BaseViewHolder<HomeListItem>>() {
+class PhotosAdapter(
+    private val imageLoader: ImageLoader,
+    private val imageClickListener: ImageClickListener
+) : RecyclerView.Adapter<BaseViewHolder<HomeListItem>>() {
 
     private val homeListItemList: MutableList<HomeListItem> = mutableListOf()
 
@@ -48,7 +53,9 @@ class PhotosAdapter : RecyclerView.Adapter<BaseViewHolder<HomeListItem>>() {
                 R.layout.photo_item,
                 parent,
                 false
-            )
+            ),
+            imageLoader,
+            imageClickListener
         )
     }
 }

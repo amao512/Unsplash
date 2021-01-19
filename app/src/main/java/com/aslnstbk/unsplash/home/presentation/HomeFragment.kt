@@ -9,24 +9,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
+import com.aslnstbk.unsplash.common.domain.ImageLoader
+import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.view.PhotosAdapter
 import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
+import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
+import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
 import com.aslnstbk.unsplash.main.MainActivity
 import com.aslnstbk.unsplash.utils.hide
 import com.aslnstbk.unsplash.utils.show
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
 
     private val homeViewModel: HomeViewModel by viewModel()
+    private val imageLoader: ImageLoader by inject()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var failTextView: TextView
     private lateinit var progressBar: ProgressBar
 
     private val photosAdapter: PhotosAdapter by lazy {
-        PhotosAdapter()
+        PhotosAdapter(
+            imageLoader = imageLoader,
+            imageClickListener = this
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,6 +45,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         initViews(view)
         observeLiveData()
+    }
+
+    override fun onClick(imageId: String) {
+        val imageDetailsFragment = ImageDetailsFragment()
+        val args = Bundle()
+        args.putString(IMAGE_ID_BUNDLE_KEY, imageId)
+        imageDetailsFragment.arguments = args
+
+        (activity as MainActivity).supportFragmentManager.beginTransaction()
+            .replace(R.id.activity_main_fragment_container, imageDetailsFragment)
+            .commit()
     }
 
     private fun initViews(view: View) {
