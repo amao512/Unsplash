@@ -8,6 +8,8 @@ import com.aslnstbk.unsplash.home.presentation.HomeFragment
 import com.aslnstbk.unsplash.navigation.Navigation
 import org.koin.android.ext.android.inject
 
+lateinit var APP_ACTIVITY: MainActivity
+
 class MainActivity : AppCompatActivity() {
 
     private val navigation: Navigation by inject()
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        APP_ACTIVITY = this
         navigation.init(activity = this)
 
         replaceFragment(HomeFragment())

@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
+import com.aslnstbk.unsplash.common.view.ToolbarBuilder
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.view.PhotosAdapter
 import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
-import com.aslnstbk.unsplash.main.MainActivity
+import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.main.MainRouter
 import com.aslnstbk.unsplash.navigation.Navigation
 import com.aslnstbk.unsplash.utils.hide
@@ -48,6 +50,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
         homeViewModel.onStart()
 
         initViews(view)
+        buildToolbar()
         observeLiveData()
     }
 
@@ -66,10 +69,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     }
 
     private fun initViews(view: View) {
-        failTextView = (activity as MainActivity).findViewById(R.id.activity_main_fail)
-        progressBar = (activity as MainActivity).findViewById(R.id.activity_main_progress_bar)
+        failTextView = APP_ACTIVITY.findViewById(R.id.activity_main_fail)
+        progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
         recyclerView = view.findViewById(R.id.fragment_home_recycler_view)
         recyclerView.adapter = photosAdapter
+    }
+
+    private fun buildToolbar(){
+        ToolbarBuilder()
+            .setNavigationIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_app_logo))
+            .setMenu(R.menu.toolbar_menu)
+            .build(activity = APP_ACTIVITY)
     }
 
     private fun observeLiveData() {
