@@ -106,6 +106,8 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     }
 
     private fun fillData(image: Image) {
+        imageDetailsViewModel.addToHistory(image)
+
         ownerFullNameTextView.text = image.user.name
         ownerEmailTextView.text = EMAIL_TEXT_FORMAT.format(image.user.username)
 

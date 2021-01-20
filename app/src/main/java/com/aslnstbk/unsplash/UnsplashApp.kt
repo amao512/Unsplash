@@ -4,6 +4,7 @@ import android.app.Application
 import com.aslnstbk.unsplash.di.applicationModule
 import com.aslnstbk.unsplash.di.mappersModule
 import com.aslnstbk.unsplash.favorite_images.di.favoriteImagesModule
+import com.aslnstbk.unsplash.history.di.historyModule
 import com.aslnstbk.unsplash.home.di.homeModule
 import com.aslnstbk.unsplash.image_details.di.imageDetailsModule
 import com.aslnstbk.unsplash.main.di.mainModule
@@ -25,7 +26,8 @@ class UnsplashApp: Application() {
                 mainModule,
                 homeModule,
                 imageDetailsModule,
-                favoriteImagesModule
+                favoriteImagesModule,
+                historyModule
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.aslnstbk.unsplash.favorite_images.presentation
+package com.aslnstbk.unsplash.history.presentation
 
 import android.os.Bundle
 import android.view.View
@@ -12,9 +12,9 @@ import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.view.ToolbarBuilder
-import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
-import com.aslnstbk.unsplash.favorite_images.presentation.view.FavoriteImagesAdapter
-import com.aslnstbk.unsplash.favorite_images.presentation.viewModel.FavoriteImagesViewModel
+import com.aslnstbk.unsplash.history.data.models.History
+import com.aslnstbk.unsplash.history.presentation.view.HistoryAdapter
+import com.aslnstbk.unsplash.history.presentation.viewModel.HistoryViewModel
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
@@ -26,15 +26,15 @@ import com.aslnstbk.unsplash.utils.extensions.show
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), ImageClickListener {
+class HistoryFragment : Fragment(R.layout.fragment_history), ImageClickListener {
 
-    private val favoriteImagesViewModel: FavoriteImagesViewModel by viewModel()
+    private val historyViewModel: HistoryViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
     private val navigation: Navigation by inject()
     private val mainRouter: MainRouter by inject()
 
-    private val favoriteImagesAdapter: FavoriteImagesAdapter by lazy {
-        FavoriteImagesAdapter(
+    private val historyAdapter: HistoryAdapter by lazy {
+        HistoryAdapter(
             imageLoader = imageLoader,
             imageClickListener = this
         )
@@ -48,7 +48,7 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        favoriteImagesViewModel.onStart()
+        historyViewModel.onStart()
 
         initViews(view)
         buildToolbar()
@@ -71,9 +71,9 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
 
     private fun initViews(view: View) {
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
-        emptyTextView = view.findViewById(R.id.fragment_favorite_images_text_view_empty)
-        recyclerView = view.findViewById(R.id.fragment_favorite_images_recycler_view)
-        recyclerView.adapter = favoriteImagesAdapter
+        emptyTextView = view.findViewById(R.id.fragment_history_text_view_empty)
+        recyclerView = view.findViewById(R.id.fragment_history_recycler_view)
+        recyclerView.adapter = historyAdapter
     }
 
     private fun buildToolbar() {
@@ -92,16 +92,16 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
     }
 
     private fun observeLiveData() {
-        favoriteImagesViewModel.favoriteImagesLiveData.observe(viewLifecycleOwner, ::handleFavoriteImages)
-        favoriteImagesViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
+        historyViewModel.historyImagesLiveData.observe(viewLifecycleOwner, ::handleFavoriteImages)
+        historyViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
     }
 
-    private fun handleFavoriteImages(list: List<FavoriteImage>) {
+    private fun handleFavoriteImages(list: List<History>) {
         if (list.isEmpty()) {
             emptyTextView.show()
             recyclerView.hide()
         } else {
-            favoriteImagesAdapter.setList(list)
+            historyAdapter.setList(list)
             recyclerView.show()
             emptyTextView.hide()
         }

@@ -19,8 +19,8 @@ class FavoriteImagesAdapter(
         return createFavoriteImageViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: FavoriteImageViewHolder, position: Int) {
-        holder.onBind(favoriteImageList[position])
+    override fun onBindViewHolder(holderFavorite: FavoriteImageViewHolder, position: Int) {
+        holderFavorite.onBind(favoriteImageList[position])
     }
 
     override fun getItemCount(): Int = favoriteImageList.size

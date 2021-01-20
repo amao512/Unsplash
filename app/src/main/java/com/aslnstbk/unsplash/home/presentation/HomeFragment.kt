@@ -14,6 +14,7 @@ import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.view.LoadingError
 import com.aslnstbk.unsplash.common.view.ToolbarBuilder
 import com.aslnstbk.unsplash.favorite_images.presentation.FavoriteImagesFragment
+import com.aslnstbk.unsplash.history.presentation.HistoryFragment
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.view.HomeAdapter
@@ -93,6 +94,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
                 R.id.toolbar_menu_favorites_item -> navigation.navigate(
                     mainRouter.setScreen(
                         fragment = FavoriteImagesFragment(),
+                        isBackStack = true
+                    )
+                )
+                R.id.toolbar_menu_history_item -> navigation.navigate(
+                    mainRouter.setScreen(
+                        fragment = HistoryFragment(),
                         isBackStack = true
                     )
                 )
