@@ -9,7 +9,7 @@ import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.models.SEARCH_BAR_ITEM_TYPE
 
-class PhotosAdapter(
+class HomeAdapter(
     private val imageLoader: ImageLoader,
     private val imageClickListener: ImageClickListener
 ) : RecyclerView.Adapter<BaseViewHolder<HomeListItem>>() {
@@ -19,7 +19,7 @@ class PhotosAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<HomeListItem> {
         return when(viewType){
             SEARCH_BAR_ITEM_TYPE -> createSearchBarViewHolder(parent)
-            else -> createPhotoViewHolder(parent)
+            else -> createImageViewHolder(parent)
         }
     }
 
@@ -47,8 +47,8 @@ class PhotosAdapter(
         )
     }
 
-    private fun createPhotoViewHolder(parent: ViewGroup): BaseViewHolder<HomeListItem> {
-        return PhotoViewHolder(
+    private fun createImageViewHolder(parent: ViewGroup): BaseViewHolder<HomeListItem> {
+        return ImageViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.photo_item,
                 parent,

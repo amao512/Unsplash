@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class PhotoApiData(
+data class ImageApiData(
     @JsonProperty("id")
     val id: String?,
     @JsonProperty("created_at")
@@ -26,13 +26,13 @@ data class PhotoApiData(
     @JsonProperty("alt_description")
     val alt_description: String?,
     @JsonProperty("urls")
-    val urls: PhotoUrlsApiData?,
+    val urls: ImageUrlsApiData?,
     @JsonProperty("links")
-    val links: PhotoLinksApiData?,
+    val links: ImageLinksApiData?,
     @JsonProperty("categories")
     val categories: Any,
     @JsonProperty("likes")
     val likes: Int?,
     @JsonProperty("user")
-    val user: PhotoUserApiData?
+    val user: ImageUserApiData?
 )

@@ -1,6 +1,6 @@
 package com.aslnstbk.unsplash.common.data.models
 
-data class PhotoLinks (
+data class ImageLinks (
     val self: String,
     val html: String,
     val download: String,

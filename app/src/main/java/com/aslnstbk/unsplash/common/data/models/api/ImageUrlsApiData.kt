@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class PhotoUrlsApiData(
+data class ImageUrlsApiData(
     @JsonProperty("raw")
     val raw: String?,
     @JsonProperty("full")

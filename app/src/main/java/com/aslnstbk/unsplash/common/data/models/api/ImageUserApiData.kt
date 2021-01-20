@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class PhotoUserApiData(
+open class ImageUserApiData(
     @JsonProperty("id")
     val id: String?,
     @JsonProperty("updated_at")
@@ -26,7 +26,7 @@ open class PhotoUserApiData(
     @JsonProperty("location")
     val location: String?,
     @JsonProperty("profile_image")
-    val profile_image: UserProfileImageApiData?,
+    val profile_photo: UserProfilePhotoApiData?,
     @JsonProperty("instagram_username")
     val instagram_username: String?,
     @JsonProperty("total_collections")

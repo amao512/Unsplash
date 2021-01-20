@@ -16,7 +16,7 @@ import com.aslnstbk.unsplash.common.view.ToolbarBuilder
 import com.aslnstbk.unsplash.favorite_images.presentation.FavoriteImagesFragment
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
-import com.aslnstbk.unsplash.home.presentation.view.PhotosAdapter
+import com.aslnstbk.unsplash.home.presentation.view.HomeAdapter
 import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
@@ -41,8 +41,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     private lateinit var failTextView: TextView
     private lateinit var progressBar: ProgressBar
 
-    private val photosAdapter: PhotosAdapter by lazy {
-        PhotosAdapter(
+    private val homeAdapter: HomeAdapter by lazy {
+        HomeAdapter(
             imageLoader = imageLoader,
             imageClickListener = this
         )
@@ -76,7 +76,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
         failTextView = APP_ACTIVITY.findViewById(R.id.activity_main_fail)
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
         recyclerView = view.findViewById(R.id.fragment_home_recycler_view)
-        recyclerView.adapter = photosAdapter
+        recyclerView.adapter = homeAdapter
     }
 
     private fun buildToolbar(){
@@ -100,14 +100,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     }
 
     private fun observeLiveData() {
-        homeViewModel.liveDataItem.observe(viewLifecycleOwner, ::handlePhotos)
+        homeViewModel.imagesLiveData.observe(viewLifecycleOwner, ::handleImages)
         homeViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
     }
 
-    private fun handlePhotos(responseData: ResponseData<List<HomeListItem>, String>) {
+    private fun handleImages(responseData: ResponseData<List<HomeListItem>, String>) {
         when(responseData){
             is ResponseData.Success -> {
-                photosAdapter.setPhotoList(responseData.result)
+                homeAdapter.setPhotoList(responseData.result)
                 failTextView.hide()
             }
             is ResponseData.Error -> {

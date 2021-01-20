@@ -1,13 +1,13 @@
 package com.aslnstbk.unsplash.home.domain
 
 import androidx.annotation.WorkerThread
-import com.aslnstbk.unsplash.common.data.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Image
 
 interface HomeRepository {
 
     @WorkerThread
-    fun getPhotos(
-        result: (List<Photo>) -> Unit,
+    fun getImages(
+        result: (List<Image>) -> Unit,
         fail: (String?) -> Unit
     )
 }

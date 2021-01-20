@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
-import com.aslnstbk.unsplash.common.data.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.home.domain.HomeRepository
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.models.PhotoListItem
@@ -14,34 +14,34 @@ class HomeViewModel(
     private val homeRepository: HomeRepository
 ) : ViewModel(){
 
-    val liveDataItem: MutableLiveData<ResponseData<List<HomeListItem>, String>> = MutableLiveData()
+    val imagesLiveData: MutableLiveData<ResponseData<List<HomeListItem>, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
     fun onStart(){
         progressLiveData.value = ProgressState.Loading
 
-        homeRepository.getPhotos(
+        homeRepository.getImages(
             result = {
-                liveDataItem.value = ResponseData.Success(preparePhotosLiveData(it))
+                imagesLiveData.value = ResponseData.Success(prepareImagesLiveData(it))
                 progressLiveData.value = ProgressState.Done
             },
             fail = {
-                liveDataItem.value = ResponseData.Error(it.toString())
+                imagesLiveData.value = ResponseData.Error(it.toString())
                 progressLiveData.value = ProgressState.Done
             }
         )
     }
 
-    private fun preparePhotosLiveData(photoList: List<Photo>): List<HomeListItem> {
-        return listOf(getSearchBarItem()) + getPhotoListItems(photoList)
+    private fun prepareImagesLiveData(imageList: List<Image>): List<HomeListItem> {
+        return listOf(getSearchBarItem()) + getImageListItems(imageList)
     }
 
     private fun getSearchBarItem(): HomeListItem {
         return SearchBarItem(data = 0)
     }
 
-    private fun getPhotoListItems(photoList: List<Photo>): List<HomeListItem> {
-        return photoList.map {
+    private fun getImageListItems(imageList: List<Image>): List<HomeListItem> {
+        return imageList.map {
             PhotoListItem(
                 imageId = it.id,
                 imageUrl = it.urls.regular

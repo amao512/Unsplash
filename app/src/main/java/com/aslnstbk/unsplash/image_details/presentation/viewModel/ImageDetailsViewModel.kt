@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
-import com.aslnstbk.unsplash.common.data.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,7 @@ class ImageDetailsViewModel(
     private val imageDetailsRepository: ImageDetailsRepository
 ) : ViewModel() {
 
-    val imageLiveData: MutableLiveData<ResponseData<Photo, String>> = MutableLiveData()
+    val imageLiveData: MutableLiveData<ResponseData<Image, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
     fun onStart(photoId: String) {

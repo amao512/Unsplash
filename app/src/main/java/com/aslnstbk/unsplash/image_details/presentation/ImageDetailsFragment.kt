@@ -10,7 +10,7 @@ import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
-import com.aslnstbk.unsplash.common.data.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.common.view.ToolbarBuilder
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
@@ -82,23 +82,23 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         imageDetailsViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
     }
 
-    private fun handleImage(responseData: ResponseData<Photo, String>) {
+    private fun handleImage(responseData: ResponseData<Image, String>) {
         when(responseData){
             is ResponseData.Success -> fillData(responseData.result)
             is ResponseData.Error -> failTextView.show()
         }
     }
 
-    private fun fillData(photo: Photo){
-        ownerFullNameTextView.text = photo.user.name
-        ownerEmailTextView.text = EMAIL_TEXT_FORMAT.format(photo.user.username)
+    private fun fillData(image: Image){
+        ownerFullNameTextView.text = image.user.name
+        ownerEmailTextView.text = EMAIL_TEXT_FORMAT.format(image.user.username)
 
-        imageLoader.loadImage(
-            url = photo.user.profile_image.small,
+        imageLoader.load(
+            url = image.user.profile_photo.small,
             target = ownerPhotoImageView
         )
-        imageLoader.loadImage(
-            url = photo.urls.regular,
+        imageLoader.load(
+            url = image.urls.regular,
             target = imageImageView
         )
 
@@ -107,7 +107,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         favoriteButton.setOnClickListener {
             imageDetailsViewModel.addFavoriteImage(
                 imageId = getImageIdFromBundle(),
-                imageUrl = photo.urls.regular
+                imageUrl = image.urls.regular
             )
         }
     }

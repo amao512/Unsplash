@@ -1,7 +1,7 @@
 package com.aslnstbk.unsplash.image_details.domain
 
 import androidx.annotation.WorkerThread
-import com.aslnstbk.unsplash.common.data.models.Photo
+import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 
 interface ImageDetailsRepository {
@@ -9,7 +9,7 @@ interface ImageDetailsRepository {
     @WorkerThread
     fun getPhotoById(
         photoId: String,
-        result: (Photo) -> Unit,
+        result: (Image) -> Unit,
         fail: (String?) -> Unit
     )
 

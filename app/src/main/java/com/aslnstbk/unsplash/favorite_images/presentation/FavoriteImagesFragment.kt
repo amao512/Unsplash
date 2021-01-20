@@ -15,7 +15,7 @@ import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.models.PhotoListItem
 import com.aslnstbk.unsplash.home.presentation.models.SearchBarItem
-import com.aslnstbk.unsplash.home.presentation.view.PhotosAdapter
+import com.aslnstbk.unsplash.home.presentation.view.HomeAdapter
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
@@ -31,8 +31,8 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
     private val navigation: Navigation by inject()
     private val mainRouter: MainRouter by inject()
 
-    private val photosAdapter: PhotosAdapter by lazy {
-        PhotosAdapter(
+    private val homeAdapter: HomeAdapter by lazy {
+        HomeAdapter(
             imageLoader = imageLoader,
             imageClickListener = this
         )
@@ -65,7 +65,7 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
 
     private fun initViews(view: View) {
         recyclerView = view.findViewById(R.id.fragment_favorite_images_recycler_view)
-        recyclerView.adapter = photosAdapter
+        recyclerView.adapter = homeAdapter
     }
 
     private fun buildToolbar(){
@@ -86,18 +86,18 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
     }
 
     private fun handleFavoriteImages(list: List<FavoriteImage>) {
-        photosAdapter.setPhotoList(preparePhotosLiveData(list))
+        homeAdapter.setPhotoList(prepareFavoriteImagesLiveData(list))
     }
 
-    private fun preparePhotosLiveData(list: List<FavoriteImage>): List<HomeListItem> {
-        return listOf(getSearchBarItem()) + getPhotoListItems(list)
+    private fun prepareFavoriteImagesLiveData(list: List<FavoriteImage>): List<HomeListItem> {
+        return listOf(getSearchBarItem()) + getImagesListItems(list)
     }
 
     private fun getSearchBarItem(): HomeListItem {
         return SearchBarItem(data = 0)
     }
 
-    private fun getPhotoListItems(list: List<FavoriteImage>): List<HomeListItem> {
+    private fun getImagesListItems(list: List<FavoriteImage>): List<HomeListItem> {
         return list.map {
             PhotoListItem(
                 imageId = it.imageId,

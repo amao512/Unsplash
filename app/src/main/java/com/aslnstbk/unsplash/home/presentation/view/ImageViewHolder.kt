@@ -9,7 +9,7 @@ import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
 import com.aslnstbk.unsplash.home.presentation.models.PhotoListItem
 
-class PhotoViewHolder(
+class ImageViewHolder(
     itemView: View,
     private val imageLoader: ImageLoader,
     private val imageClickListener: ImageClickListener
@@ -22,7 +22,7 @@ class PhotoViewHolder(
         val imageId: String = (data as? PhotoListItem)?.imageId ?: return
         val imageUrl: String = (data as? PhotoListItem)?.imageUrl ?: return
 
-        imageLoader.loadImage(
+        imageLoader.load(
             url = imageUrl,
             target = imageView
         )

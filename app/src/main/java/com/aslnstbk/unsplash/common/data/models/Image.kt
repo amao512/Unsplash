@@ -1,6 +1,6 @@
 package com.aslnstbk.unsplash.common.data.models
 
-data class Photo(
+data class Image(
     val id: String,
     val created_at: String,
     val updated_at: String,
@@ -11,9 +11,9 @@ data class Photo(
     val blur_hash: String,
     val description: String,
     val alt_description: String,
-    val urls: PhotoUrls,
-    val links: PhotoLinks,
+    val urls: ImageUrls,
+    val links: ImageLinks,
     val categories: Any,
     val likes: Int,
-    val user: PhotoUser
+    val user: ImageUser
 )

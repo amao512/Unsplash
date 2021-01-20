@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 
 class DefaultImageLoader : ImageLoader {
 
-    override fun loadImage(
+    override fun load(
         url: String,
         target: ImageView
     ) {

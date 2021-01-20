@@ -1,6 +1,6 @@
 package com.aslnstbk.unsplash.common.data.models
 
-data class PhotoUrls (
+data class ImageUrls (
     val raw: String,
     val full: String,
     val regular: String,

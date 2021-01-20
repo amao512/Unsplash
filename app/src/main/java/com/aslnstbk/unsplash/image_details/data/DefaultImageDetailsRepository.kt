@@ -1,7 +1,7 @@
 package com.aslnstbk.unsplash.image_details.data
 
-import com.aslnstbk.unsplash.common.data.models.Photo
-import com.aslnstbk.unsplash.common.data.models.api.PhotoApiData
+import com.aslnstbk.unsplash.common.data.models.Image
+import com.aslnstbk.unsplash.common.data.models.api.ImageApiData
 import com.aslnstbk.unsplash.common.data.room.AppDatabase
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
@@ -18,25 +18,25 @@ class DefaultImageDetailsRepository(
 
     override fun getPhotoById(
         photoId: String,
-        result: (Photo) -> Unit,
+        result: (Image) -> Unit,
         fail: (String?) -> Unit
     ) {
         imageDetailsDataSource.getPhotoById(photoId = photoId)
-            .enqueue(object : Callback<PhotoApiData> {
+            .enqueue(object : Callback<ImageApiData> {
                 override fun onResponse(
-                    call: Call<PhotoApiData>,
-                    response: Response<PhotoApiData>
+                    call: Call<ImageApiData>,
+                    response: Response<ImageApiData>
                 ) {
                     if (response.isSuccessful){
-                        val photo: Photo = photoApiDataMapper.map(response.body())
+                        val image: Image = photoApiDataMapper.map(response.body())
 
-                        result(photo)
+                        result(image)
                     } else {
                         fail(response.message())
                     }
                 }
 
-                override fun onFailure(call: Call<PhotoApiData>, t: Throwable) {
+                override fun onFailure(call: Call<ImageApiData>, t: Throwable) {
                     fail(t.localizedMessage)
                 }
             })

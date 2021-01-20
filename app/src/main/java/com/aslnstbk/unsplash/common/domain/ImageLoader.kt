@@ -4,7 +4,7 @@ import android.widget.ImageView
 
 interface ImageLoader {
 
-    fun loadImage(
+    fun load(
         url: String,
         target: ImageView
     )

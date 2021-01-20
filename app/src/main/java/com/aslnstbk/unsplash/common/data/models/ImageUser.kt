@@ -1,6 +1,6 @@
 package com.aslnstbk.unsplash.common.data.models
 
-data class PhotoUser(
+data class ImageUser(
     val id: String,
     val updated_at: String,
     val username: String,
@@ -11,7 +11,7 @@ data class PhotoUser(
     val portfolio_url: String,
     val bio: String,
     val location: String,
-    val profile_image: UserProfileImage,
+    val profile_photo: UserProfilePhoto,
     val instagram_username: String,
     val total_collections: Int,
     val total_likes: Int,
