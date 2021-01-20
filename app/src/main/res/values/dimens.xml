@@ -6,4 +6,6 @@
     <dimen name="padding_size_16x">16dp</dimen>
     <dimen name="text_size_14x">14sp</dimen>
     <dimen name="image_owner_photo_size">50dp</dimen>
+    <dimen name="text_size_18x">18sp</dimen>
+    <dimen name="margin_size_8x">8dp</dimen>
 </resources>

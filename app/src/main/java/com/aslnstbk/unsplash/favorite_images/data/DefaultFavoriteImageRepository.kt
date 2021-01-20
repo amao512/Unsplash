@@ -1,6 +1,5 @@
 package com.aslnstbk.unsplash.favorite_images.data
 
-import androidx.lifecycle.LiveData
 import com.aslnstbk.unsplash.common.data.room.AppDatabase
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.favorite_images.domain.FavoriteImageRepository
@@ -9,7 +8,7 @@ class DefaultFavoriteImageRepository(
     private val appDatabase: AppDatabase
 ) : FavoriteImageRepository {
 
-    override suspend fun getAllFavoriteImages(): LiveData<List<FavoriteImage>> {
+    override suspend fun getAllFavoriteImages(): List<FavoriteImage> {
         return appDatabase.favoriteImageDao().getAllFavoriteImage()
     }
 

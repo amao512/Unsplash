@@ -27,21 +27,18 @@
         <FrameLayout
             android:id="@+id/activity_main_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            />
+
+        <include
+            android:id="@+id/activity_main_loading_error"
+            layout="@layout/layout_loading_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
             />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/activity_main_fail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/colorFail"
-        android:textSize="@dimen/text_size_20x"
-        android:visibility="gone"
-        tools:text="Error"
-        />
 
     <ProgressBar
         android:id="@+id/activity_main_progress_bar"

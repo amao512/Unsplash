@@ -11,12 +11,13 @@ import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.data.models.Image
+import com.aslnstbk.unsplash.common.view.LoadingError
 import com.aslnstbk.unsplash.common.view.ToolbarBuilder
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.navigation.Navigation
-import com.aslnstbk.unsplash.utils.hide
-import com.aslnstbk.unsplash.utils.show
+import com.aslnstbk.unsplash.utils.extensions.hide
+import com.aslnstbk.unsplash.utils.extensions.show
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,6 +30,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     private val navigation: Navigation by inject()
 
     private val imageLoader: ImageLoader by inject()
+    private val loadingError: LoadingError by inject()
 
     private lateinit var toolbar: Toolbar
     private lateinit var ownerPhotoImageView: ImageView
@@ -36,14 +38,16 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     private lateinit var ownerEmailTextView: TextView
     private lateinit var imageImageView: ImageView
     private lateinit var favoriteButton: ImageView
-    private lateinit var failTextView: TextView
     private lateinit var progressBar: ProgressBar
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        imageDetailsViewModel.onStart(getImageIdFromBundle())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        imageDetailsViewModel.onStart(getImageIdFromBundle())
 
         initViews(view)
         buildToolbar()
@@ -63,13 +67,17 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         ownerEmailTextView = view.findViewById(R.id.fragment_image_details_image_owner_email)
         imageImageView = view.findViewById(R.id.fragment_image_details_image)
         favoriteButton = view.findViewById(R.id.fragment_image_details_button_favorite)
-        failTextView = APP_ACTIVITY.findViewById(R.id.activity_main_fail)
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
     }
 
-    private fun buildToolbar(){
+    private fun buildToolbar() {
         toolbar = ToolbarBuilder()
-            .setNavigationIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_back))
+            .setNavigationIcon(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_arrow_back
+                )
+            )
             .build(activity = APP_ACTIVITY)
 
         toolbar.setNavigationOnClickListener {
@@ -83,13 +91,21 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     }
 
     private fun handleImage(responseData: ResponseData<Image, String>) {
-        when(responseData){
-            is ResponseData.Success -> fillData(responseData.result)
-            is ResponseData.Error -> failTextView.show()
+        when (responseData) {
+            is ResponseData.Success -> {
+                fillData(responseData.result)
+                loadingError.hide()
+            }
+            is ResponseData.Error -> {
+                loadingError.show()
+                loadingError.onRetryClick {
+                    imageDetailsViewModel.onStart(getImageIdFromBundle())
+                }
+            }
         }
     }
 
-    private fun fillData(image: Image){
+    private fun fillData(image: Image) {
         ownerFullNameTextView.text = image.user.name
         ownerEmailTextView.text = EMAIL_TEXT_FORMAT.format(image.user.username)
 
@@ -106,7 +122,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         view?.show()
 
         favoriteButton.setOnClickListener {
-            if(image.isFavorite){
+            if (image.isFavorite) {
                 imageDetailsViewModel.removeFavoriteImage(image = image)
             } else {
                 imageDetailsViewModel.addFavoriteImage(image = image)
@@ -114,14 +130,14 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         }
     }
 
-    private fun setFavoriteImage(isFavorite: Boolean) = if(isFavorite){
+    private fun setFavoriteImage(isFavorite: Boolean) = if (isFavorite) {
         favoriteButton.setBackgroundResource(R.drawable.ic_favorite_bold_red)
     } else {
         favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border)
     }
 
     private fun handleProgress(progressState: ProgressState) {
-        when(progressState){
+        when (progressState) {
             is ProgressState.Loading -> progressBar.show()
             is ProgressState.Done -> progressBar.hide()
         }

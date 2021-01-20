@@ -1,14 +1,16 @@
 package com.aslnstbk.unsplash.favorite_images.data
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 
 @Dao
 interface FavoriteImageDao {
 
     @Query("SELECT * FROM favorite_image_table")
-    fun getAllFavoriteImage(): LiveData<List<FavoriteImage>>
+    fun getAllFavoriteImage(): List<FavoriteImage>
 
     @Query("SELECT * FROM favorite_image_table WHERE imageId = :imageId")
     fun getById(imageId: String): FavoriteImage

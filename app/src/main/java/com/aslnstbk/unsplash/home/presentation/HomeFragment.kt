@@ -3,7 +3,6 @@ package com.aslnstbk.unsplash.home.presentation
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +11,7 @@ import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
+import com.aslnstbk.unsplash.common.view.LoadingError
 import com.aslnstbk.unsplash.common.view.ToolbarBuilder
 import com.aslnstbk.unsplash.favorite_images.presentation.FavoriteImagesFragment
 import com.aslnstbk.unsplash.home.data.ImageClickListener
@@ -23,8 +23,8 @@ import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.main.MainRouter
 import com.aslnstbk.unsplash.navigation.Navigation
-import com.aslnstbk.unsplash.utils.hide
-import com.aslnstbk.unsplash.utils.show
+import com.aslnstbk.unsplash.utils.extensions.hide
+import com.aslnstbk.unsplash.utils.extensions.show
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -34,11 +34,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     private val imageLoader: ImageLoader by inject()
     private val navigation: Navigation by inject()
     private val mainRouter: MainRouter by inject()
+    private val loadingError: LoadingError by inject()
 
     private lateinit var toolbar: Toolbar
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var failTextView: TextView
     private lateinit var progressBar: ProgressBar
 
     private val homeAdapter: HomeAdapter by lazy {
@@ -48,10 +48,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
         )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         homeViewModel.onStart()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initViews(view)
         buildToolbar()
@@ -73,20 +77,19 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     }
 
     private fun initViews(view: View) {
-        failTextView = APP_ACTIVITY.findViewById(R.id.activity_main_fail)
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
         recyclerView = view.findViewById(R.id.fragment_home_recycler_view)
         recyclerView.adapter = homeAdapter
     }
 
-    private fun buildToolbar(){
+    private fun buildToolbar() {
         toolbar = ToolbarBuilder()
             .setNavigationIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_app_logo))
             .setMenu(R.menu.toolbar_menu)
             .build(activity = APP_ACTIVITY)
 
         toolbar.setOnMenuItemClickListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.toolbar_menu_favorites_item -> navigation.navigate(
                     mainRouter.setScreen(
                         fragment = FavoriteImagesFragment(),
@@ -105,20 +108,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     }
 
     private fun handleImages(responseData: ResponseData<List<HomeListItem>, String>) {
-        when(responseData){
+        when (responseData) {
             is ResponseData.Success -> {
                 homeAdapter.setPhotoList(responseData.result)
-                failTextView.hide()
+                loadingError.hide()
             }
             is ResponseData.Error -> {
-                failTextView.show()
-                failTextView.text = responseData.error
+                loadingError.show()
+                loadingError.onRetryClick {
+                    homeViewModel.onStart()
+                }
             }
         }
     }
 
     private fun handleProgress(progressState: ProgressState) {
-        when(progressState){
+        when (progressState) {
             ProgressState.Loading -> progressBar.show()
             ProgressState.Done -> progressBar.hide()
         }
