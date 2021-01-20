@@ -7,7 +7,7 @@ import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.home.domain.HomeRepository
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
-import com.aslnstbk.unsplash.home.presentation.models.PhotoListItem
+import com.aslnstbk.unsplash.home.presentation.models.ImageListItem
 import com.aslnstbk.unsplash.home.presentation.models.SearchBarItem
 
 class HomeViewModel(
@@ -42,7 +42,7 @@ class HomeViewModel(
 
     private fun getImageListItems(imageList: List<Image>): List<HomeListItem> {
         return imageList.map {
-            PhotoListItem(
+            ImageListItem(
                 imageId = it.id,
                 imageUrl = it.urls.regular
             )

@@ -7,7 +7,7 @@ import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
-import com.aslnstbk.unsplash.home.presentation.models.PhotoListItem
+import com.aslnstbk.unsplash.home.presentation.models.ImageListItem
 
 class ImageViewHolder(
     itemView: View,
@@ -15,12 +15,12 @@ class ImageViewHolder(
     private val imageClickListener: ImageClickListener
 ) : BaseViewHolder<HomeListItem>(itemView) {
 
-    private val imageView: ImageView = itemView.findViewById(R.id.photo_item_image)
-    private val urlTextView: TextView = itemView.findViewById(R.id.photo_item_url)
+    private val imageView: ImageView = itemView.findViewById(R.id.image_item_image)
+    private val urlTextView: TextView = itemView.findViewById(R.id.image_item_url)
 
     override fun onBind(data: HomeListItem){
-        val imageId: String = (data as? PhotoListItem)?.imageId ?: return
-        val imageUrl: String = (data as? PhotoListItem)?.imageUrl ?: return
+        val imageId: String = (data as? ImageListItem)?.imageId ?: return
+        val imageUrl: String = (data as? ImageListItem)?.imageUrl ?: return
 
         imageLoader.load(
             url = imageUrl,

@@ -10,12 +10,9 @@ import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.view.ToolbarBuilder
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
+import com.aslnstbk.unsplash.favorite_images.presentation.view.FavoriteImagesAdapter
 import com.aslnstbk.unsplash.favorite_images.presentation.viewModel.FavoriteImagesViewModel
 import com.aslnstbk.unsplash.home.data.ImageClickListener
-import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
-import com.aslnstbk.unsplash.home.presentation.models.PhotoListItem
-import com.aslnstbk.unsplash.home.presentation.models.SearchBarItem
-import com.aslnstbk.unsplash.home.presentation.view.HomeAdapter
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
@@ -31,8 +28,8 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
     private val navigation: Navigation by inject()
     private val mainRouter: MainRouter by inject()
 
-    private val homeAdapter: HomeAdapter by lazy {
-        HomeAdapter(
+    private val favoriteImagesAdapter: FavoriteImagesAdapter by lazy {
+        FavoriteImagesAdapter(
             imageLoader = imageLoader,
             imageClickListener = this
         )
@@ -65,7 +62,7 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
 
     private fun initViews(view: View) {
         recyclerView = view.findViewById(R.id.fragment_favorite_images_recycler_view)
-        recyclerView.adapter = homeAdapter
+        recyclerView.adapter = favoriteImagesAdapter
     }
 
     private fun buildToolbar(){
@@ -86,23 +83,6 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
     }
 
     private fun handleFavoriteImages(list: List<FavoriteImage>) {
-        homeAdapter.setPhotoList(prepareFavoriteImagesLiveData(list))
-    }
-
-    private fun prepareFavoriteImagesLiveData(list: List<FavoriteImage>): List<HomeListItem> {
-        return listOf(getSearchBarItem()) + getImagesListItems(list)
-    }
-
-    private fun getSearchBarItem(): HomeListItem {
-        return SearchBarItem(data = 0)
-    }
-
-    private fun getImagesListItems(list: List<FavoriteImage>): List<HomeListItem> {
-        return list.map {
-            PhotoListItem(
-                imageId = it.imageId,
-                imageUrl = it.imageUrl
-            )
-        }
+        favoriteImagesAdapter.setList(list)
     }
 }

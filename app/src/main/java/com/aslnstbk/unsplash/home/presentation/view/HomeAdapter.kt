@@ -50,7 +50,7 @@ class HomeAdapter(
     private fun createImageViewHolder(parent: ViewGroup): BaseViewHolder<HomeListItem> {
         return ImageViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.photo_item,
+                R.layout.image_item,
                 parent,
                 false
             ),

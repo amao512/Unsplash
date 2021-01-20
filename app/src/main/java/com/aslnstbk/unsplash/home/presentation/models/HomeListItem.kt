@@ -7,7 +7,7 @@ sealed class HomeListItem(
     val type: Int
 )
 
-class PhotoListItem(
+class ImageListItem(
     val imageId: String,
     val imageUrl: String
 ): HomeListItem(PHOTOS_LIST_ITEM_TYPE)
