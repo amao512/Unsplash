@@ -6,7 +6,7 @@
 
     <item android:id="@+id/toolbar_menu_favorites_item"
         android:title="@string/toolbar_menu_favorites"
-        android:icon="@drawable/ic_favorite_bold"
+        android:icon="@drawable/ic_favorite_bold_white"
         app:showAsAction="ifRoom"
         />
 

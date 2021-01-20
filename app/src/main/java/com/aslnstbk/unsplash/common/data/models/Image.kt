@@ -16,4 +16,6 @@ data class Image(
     val categories: Any,
     val likes: Int,
     val user: ImageUser
-)
+) {
+    var isFavorite: Boolean = false
+}

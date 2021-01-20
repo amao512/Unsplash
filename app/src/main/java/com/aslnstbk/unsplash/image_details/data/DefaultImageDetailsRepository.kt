@@ -16,12 +16,12 @@ class DefaultImageDetailsRepository(
     private val photoApiDataMapper: PhotoApiDataMapper
 ) : ImageDetailsRepository {
 
-    override fun getPhotoById(
+    override fun getImageById(
         photoId: String,
         result: (Image) -> Unit,
         fail: (String?) -> Unit
     ) {
-        imageDetailsDataSource.getPhotoById(photoId = photoId)
+        imageDetailsDataSource.getImageById(photoId = photoId)
             .enqueue(object : Callback<ImageApiData> {
                 override fun onResponse(
                     call: Call<ImageApiData>,
@@ -44,5 +44,20 @@ class DefaultImageDetailsRepository(
 
     override suspend fun addFavoriteImage(favoriteImage: FavoriteImage) {
         appDatabase.favoriteImageDao().insert(favoriteImage)
+    }
+
+    override suspend fun removeFavoriteImage(imageId: String) {
+        appDatabase.favoriteImageDao().delete(imageId)
+    }
+
+    override suspend fun checkById(imageId: String): Boolean {
+        val favoriteImage: FavoriteImage? = appDatabase.favoriteImageDao().getById(imageId)
+        var isFavorite = false
+
+        if(favoriteImage != null){
+            isFavorite = true
+        }
+
+        return isFavorite
     }
 }

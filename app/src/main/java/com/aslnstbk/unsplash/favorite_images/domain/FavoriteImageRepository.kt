@@ -16,5 +16,5 @@ interface FavoriteImageRepository {
     suspend fun updateFavoriteImage(favoriteImage: FavoriteImage)
 
     @WorkerThread
-    suspend fun delete(favoriteImage: FavoriteImage)
+    suspend fun delete(imageId: String)
 }

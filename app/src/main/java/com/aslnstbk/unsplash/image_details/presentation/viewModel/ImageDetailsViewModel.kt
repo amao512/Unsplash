@@ -18,12 +18,32 @@ class ImageDetailsViewModel(
     val imageLiveData: MutableLiveData<ResponseData<Image, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
-    fun onStart(photoId: String) {
+    fun onStart(imageId: String) {
         progressLiveData.value = ProgressState.Loading
+        getFavoriteImages(imageId)
+    }
 
-        imageDetailsRepository.getPhotoById(
-            photoId = photoId,
+    fun addFavoriteImage(image: Image) = CoroutineScope(Dispatchers.IO).launch {
+        imageDetailsRepository.addFavoriteImage(
+            FavoriteImage(
+                imageId = image.id,
+                imageUrl = image.urls.regular
+            )
+        )
+        getFavoriteImages(image.id)
+    }
+
+    fun removeFavoriteImage(image: Image) = CoroutineScope(Dispatchers.IO).launch {
+        imageDetailsRepository.removeFavoriteImage(imageId = image.id)
+        getFavoriteImages(image.id)
+    }
+
+    private fun getFavoriteImages(imageId: String) {
+        imageDetailsRepository.getImageById(
+            photoId = imageId,
             result = {
+                setFavoriteImage(it)
+
                 imageLiveData.value = ResponseData.Success(it)
                 progressLiveData.value = ProgressState.Done
             },
@@ -34,16 +54,11 @@ class ImageDetailsViewModel(
         )
     }
 
-    fun addFavoriteImage(
-        imageId: String,
-        imageUrl: String,
-    ) = CoroutineScope(Dispatchers.IO).launch {
-        imageDetailsRepository.addFavoriteImage(
-            FavoriteImage(
-                id = 0,
-                imageId = imageId,
-                imageUrl = imageUrl
-            )
-        )
+    private fun setFavoriteImage(image: Image) = CoroutineScope(Dispatchers.IO).launch {
+        val isFavorite: Boolean = imageDetailsRepository.checkById(imageId = image.id)
+
+        if (isFavorite) {
+            image.isFavorite = !image.isFavorite
+        }
     }
 }

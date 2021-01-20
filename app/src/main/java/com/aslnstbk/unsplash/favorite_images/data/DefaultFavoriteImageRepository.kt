@@ -21,7 +21,7 @@ class DefaultFavoriteImageRepository(
         appDatabase.favoriteImageDao().update(favoriteImage)
     }
 
-    override suspend fun delete(favoriteImage: FavoriteImage) {
-        appDatabase.favoriteImageDao().delete(favoriteImage)
+    override suspend fun delete(imageId: String) {
+        appDatabase.favoriteImageDao().delete(imageId)
     }
 }

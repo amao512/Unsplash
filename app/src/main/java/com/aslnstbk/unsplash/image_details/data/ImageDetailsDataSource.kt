@@ -8,5 +8,5 @@ import retrofit2.http.Path
 interface ImageDetailsDataSource {
 
     @GET("photos/{id}")
-    fun getPhotoById(@Path("id") photoId: String): Call<ImageApiData>
+    fun getImageById(@Path("id") photoId: String): Call<ImageApiData>
 }

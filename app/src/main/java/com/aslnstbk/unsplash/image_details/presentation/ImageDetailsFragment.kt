@@ -35,7 +35,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     private lateinit var ownerFullNameTextView: TextView
     private lateinit var ownerEmailTextView: TextView
     private lateinit var imageImageView: ImageView
-    private lateinit var favoriteButton: ImageButton
+    private lateinit var favoriteButton: ImageView
     private lateinit var failTextView: TextView
     private lateinit var progressBar: ProgressBar
 
@@ -101,15 +101,23 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
             url = image.urls.regular,
             target = imageImageView
         )
+        setFavoriteImage(isFavorite = image.isFavorite)
 
         view?.show()
 
         favoriteButton.setOnClickListener {
-            imageDetailsViewModel.addFavoriteImage(
-                imageId = getImageIdFromBundle(),
-                imageUrl = image.urls.regular
-            )
+            if(image.isFavorite){
+                imageDetailsViewModel.removeFavoriteImage(image = image)
+            } else {
+                imageDetailsViewModel.addFavoriteImage(image = image)
+            }
         }
+    }
+
+    private fun setFavoriteImage(isFavorite: Boolean) = if(isFavorite){
+        favoriteButton.setBackgroundResource(R.drawable.ic_favorite_bold_red)
+    } else {
+        favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border)
     }
 
     private fun handleProgress(progressState: ProgressState) {
