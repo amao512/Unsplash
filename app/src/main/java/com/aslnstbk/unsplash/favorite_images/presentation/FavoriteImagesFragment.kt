@@ -55,7 +55,7 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
         observeLiveData()
     }
 
-    override fun onClick(imageId: String) {
+    override fun onImageClick(imageId: String) {
         val imageDetailsFragment = ImageDetailsFragment()
         val args = Bundle()
         args.putString(IMAGE_ID_BUNDLE_KEY, imageId)

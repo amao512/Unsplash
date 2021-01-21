@@ -2,5 +2,5 @@ package com.aslnstbk.unsplash.home.data
 
 interface ImageClickListener {
 
-    fun onClick(imageId: String)
+    fun onImageClick(imageId: String)
 }

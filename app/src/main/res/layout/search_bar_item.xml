@@ -9,6 +9,7 @@
     >
 
     <EditText
+        android:id="@+id/search_bar_item_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_size_16x"
@@ -18,6 +19,7 @@
         android:hint="@string/search"
         android:textColorHint="@color/white"
         android:textAlignment="center"
+        android:inputType="text"
         />
 
 </LinearLayout>

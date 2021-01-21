@@ -32,6 +32,22 @@ class HomeViewModel(
         )
     }
 
+    fun onSearchImage(query: String){
+        progressLiveData.value = ProgressState.Loading
+
+        homeRepository.searchImages(
+            query = query,
+            result = {
+                imagesLiveData.value = ResponseData.Success(prepareImagesLiveData(it.results))
+                progressLiveData.value = ProgressState.Done
+            },
+            fail = {
+                imagesLiveData.value = ResponseData.Error(it.toString())
+                progressLiveData.value = ProgressState.Done
+            }
+        )
+    }
+
     private fun prepareImagesLiveData(imageList: List<Image>): List<HomeListItem> {
         return listOf(getSearchBarItem()) + getImageListItems(imageList)
     }

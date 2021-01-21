@@ -6,7 +6,7 @@ import com.aslnstbk.unsplash.common.data.room.AppDatabase
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.history.data.models.History
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
-import com.aslnstbk.unsplash.utils.mappers.PhotoApiDataMapper
+import com.aslnstbk.unsplash.utils.mappers.ImageApiDataMapper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,7 +14,7 @@ import retrofit2.Response
 class DefaultImageDetailsRepository(
     private val imageDetailsDataSource: ImageDetailsDataSource,
     private val appDatabase: AppDatabase,
-    private val photoApiDataMapper: PhotoApiDataMapper
+    private val imageApiDataMapper: ImageApiDataMapper
 ) : ImageDetailsRepository {
 
     override fun getImageById(
@@ -29,7 +29,7 @@ class DefaultImageDetailsRepository(
                     response: Response<ImageApiData>
                 ) {
                     if (response.isSuccessful){
-                        val image: Image = photoApiDataMapper.map(response.body())
+                        val image: Image = imageApiDataMapper.map(response.body())
 
                         result(image)
                     } else {

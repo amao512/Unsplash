@@ -29,7 +29,7 @@ import com.aslnstbk.unsplash.utils.extensions.show
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
+class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener, SearchListener {
 
     private val homeViewModel: HomeViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
@@ -45,7 +45,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     private val homeAdapter: HomeAdapter by lazy {
         HomeAdapter(
             imageLoader = imageLoader,
-            imageClickListener = this
+            imageClickListener = this,
+            searchListener = this
         )
     }
 
@@ -63,7 +64,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
         observeLiveData()
     }
 
-    override fun onClick(imageId: String) {
+    override fun onImageClick(imageId: String) {
         val imageDetailsFragment = ImageDetailsFragment()
         val args = Bundle()
         args.putString(IMAGE_ID_BUNDLE_KEY, imageId)
@@ -75,6 +76,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
                 isBackStack = true
             )
         )
+    }
+
+    override fun onSearch(query: String) {
+        homeViewModel.onSearchImage(query = query)
     }
 
     private fun initViews(view: View) {

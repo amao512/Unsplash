@@ -28,7 +28,7 @@ class ImageViewHolder(
         )
 
         itemView.setOnClickListener {
-            imageClickListener.onClick(imageId = imageId)
+            imageClickListener.onImageClick(imageId = imageId)
         }
     }
 }

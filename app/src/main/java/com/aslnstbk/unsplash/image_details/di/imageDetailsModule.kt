@@ -27,7 +27,7 @@ val imageDetailsModule = module {
         DefaultImageDetailsRepository(
             imageDetailsDataSource = get(),
             appDatabase = get(),
-            photoApiDataMapper = get()
+            imageApiDataMapper = get()
         ) as ImageDetailsRepository
     }
 }

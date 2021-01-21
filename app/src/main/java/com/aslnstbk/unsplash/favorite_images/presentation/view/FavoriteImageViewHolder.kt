@@ -23,7 +23,7 @@ class FavoriteImageViewHolder(
         )
 
         itemView.setOnClickListener {
-            imageClickListener.onClick(imageId = favoriteImage.imageId)
+            imageClickListener.onImageClick(imageId = favoriteImage.imageId)
         }
     }
 }

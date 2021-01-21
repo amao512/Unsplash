@@ -23,7 +23,7 @@ class HistoryViewHolder(
         )
 
         itemView.setOnClickListener {
-            imageClickListener.onClick(imageId = history.imageId)
+            imageClickListener.onImageClick(imageId = history.imageId)
         }
     }
 }

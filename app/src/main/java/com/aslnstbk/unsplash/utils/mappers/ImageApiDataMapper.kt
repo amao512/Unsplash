@@ -6,7 +6,7 @@ import com.aslnstbk.unsplash.common.data.models.api.ImageApiData
 const val EMPTY_STRING = ""
 const val DEFAULT_INT = 0
 
-class PhotoApiDataMapper(
+class ImageApiDataMapper(
     private val imageUrlsApiDataMapper: ImageUrlsApiDataMapper,
     private val imageLinksApiDataMapper: ImageLinksApiDataMapper,
     private val imageUserApiDataMapper: ImageUserApiDataMapper

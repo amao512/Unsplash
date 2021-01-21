@@ -1,16 +1,12 @@
 package com.aslnstbk.unsplash.di
 
-import com.aslnstbk.unsplash.utils.mappers.PhotoApiDataMapper
-import com.aslnstbk.unsplash.utils.mappers.ImageLinksApiDataMapper
-import com.aslnstbk.unsplash.utils.mappers.ImageUrlsApiDataMapper
-import com.aslnstbk.unsplash.utils.mappers.ImageUserApiDataMapper
-import com.aslnstbk.unsplash.utils.mappers.UserProfilePhotoApiDataMapper
+import com.aslnstbk.unsplash.utils.mappers.*
 import org.koin.dsl.module
 
 val mappersModule = module {
 
     single {
-        PhotoApiDataMapper(
+        ImageApiDataMapper(
             imageUrlsApiDataMapper = get(),
             imageLinksApiDataMapper = get(),
             imageUserApiDataMapper = get()
@@ -33,5 +29,11 @@ val mappersModule = module {
 
     single {
         UserProfilePhotoApiDataMapper()
+    }
+
+    single {
+        SearchResultApiDataMapper(
+            imageApiDataMapper = get()
+        )
     }
 }
