@@ -1,5 +1,6 @@
 package com.aslnstbk.unsplash.common.data.models.api
 
+import com.aslnstbk.unsplash.image_details.data.models.UserProfilePhotoApiData
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 

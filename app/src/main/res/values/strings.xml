@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">Unsplash</string>
-    <string name="toolbar_menu_favorites">Favorites</string>
-    <string name="toolbar_menu_history">History</string>
+
     <string name="search">Search</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_favorite_images_empty">Empty!</string>
     <string name="menu_item_search">Search</string>

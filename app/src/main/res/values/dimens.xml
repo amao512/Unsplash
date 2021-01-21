@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_size_16x">16dp</dimen>
-    <dimen name="text_size_20x">20sp</dimen>
-    <dimen name="progress_bar_size">50dp</dimen>
-    <dimen name="padding_size_16x">16dp</dimen>
-    <dimen name="text_size_14x">14sp</dimen>
-    <dimen name="image_owner_photo_size">50dp</dimen>
-    <dimen name="text_size_18x">18sp</dimen>
     <dimen name="margin_size_8x">8dp</dimen>
+    <dimen name="margin_size_16x">16dp</dimen>
+
+    <dimen name="padding_size_10x">10dp</dimen>
+    <dimen name="padding_size_16x">16dp</dimen>
+
+    <dimen name="text_size_14x">14sp</dimen>
+    <dimen name="text_size_18x">18sp</dimen>
+    <dimen name="text_size_20x">20sp</dimen>
+
+    <dimen name="progress_bar_size">50dp</dimen>
+    <dimen name="image_owner_photo_size">50dp</dimen>
+
 </resources>

@@ -6,6 +6,7 @@ interface ImageLoader {
 
     fun load(
         url: String,
-        target: ImageView
+        target: ImageView,
+        withCenterCrop: Boolean = true
     )
 }

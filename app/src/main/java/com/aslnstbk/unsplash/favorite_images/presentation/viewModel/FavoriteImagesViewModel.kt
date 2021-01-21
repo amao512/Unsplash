@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.favorite_images.domain.FavoriteImageRepository
-import com.aslnstbk.unsplash.images_line.ImageItem
+import com.aslnstbk.unsplash.common.presentation.models.ImageItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

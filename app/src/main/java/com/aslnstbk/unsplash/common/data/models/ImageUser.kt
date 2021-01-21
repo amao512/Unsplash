@@ -1,5 +1,7 @@
 package com.aslnstbk.unsplash.common.data.models
 
+import com.aslnstbk.unsplash.image_details.data.models.UserProfilePhoto
+
 data class ImageUser(
     val id: String,
     val updated_at: String,

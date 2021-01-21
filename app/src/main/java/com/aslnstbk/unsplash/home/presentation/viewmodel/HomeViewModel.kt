@@ -6,7 +6,7 @@ import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.home.domain.HomeRepository
-import com.aslnstbk.unsplash.images_line.ImageItem
+import com.aslnstbk.unsplash.common.presentation.models.ImageItem
 
 class HomeViewModel(
     private val homeRepository: HomeRepository
@@ -21,22 +21,6 @@ class HomeViewModel(
         homeRepository.getImages(
             result = {
                 imagesLiveData.value = ResponseData.Success(getImageItemsList(it))
-                progressLiveData.value = ProgressState.Done
-            },
-            fail = {
-                imagesLiveData.value = ResponseData.Error(it.toString())
-                progressLiveData.value = ProgressState.Done
-            }
-        )
-    }
-
-    fun onSearchImage(query: String){
-        progressLiveData.value = ProgressState.Loading
-
-        homeRepository.searchImages(
-            query = query,
-            result = {
-                imagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))
                 progressLiveData.value = ProgressState.Done
             },
             fail = {

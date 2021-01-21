@@ -11,25 +11,24 @@ import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
-import com.aslnstbk.unsplash.common.view.LoadingError
-import com.aslnstbk.unsplash.common.view.ToolbarBuilder
-import com.aslnstbk.unsplash.favorite_images.presentation.FavoriteImagesFragment
-import com.aslnstbk.unsplash.history.presentation.HistoryFragment
+import com.aslnstbk.unsplash.common.presentation.models.ImageItem
+import com.aslnstbk.unsplash.common.presentation.view.ImagesLineAdapter
+import com.aslnstbk.unsplash.common.presentation.view.LoadingError
+import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
-import com.aslnstbk.unsplash.images_line.ImageItem
-import com.aslnstbk.unsplash.images_line.ImagesLineAdapter
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.main.MainRouter
 import com.aslnstbk.unsplash.navigation.Navigation
+import com.aslnstbk.unsplash.search.presentation.SearchFragment
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener, SearchListener {
+class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
 
     private val homeViewModel: HomeViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
@@ -77,10 +76,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener, Searc
         )
     }
 
-    override fun onSearch(query: String) {
-        homeViewModel.onSearchImage(query = query)
-    }
-
     private fun initViews(view: View) {
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
         recyclerView = view.findViewById(R.id.fragment_home_recycler_view)
@@ -90,20 +85,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener, Searc
     private fun buildToolbar() {
         toolbar = ToolbarBuilder()
             .setNavigationIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_app_logo))
-            .setMenu(R.menu.toolbar_menu)
+            .setMenu(R.menu.home_toolbar_menu)
             .build(activity = APP_ACTIVITY)
 
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.home_toolbar_menu_item_search -> navigation.navigate(
                     mainRouter.setScreen(
-                        fragment = FavoriteImagesFragment(),
-                        isBackStack = true
-                    )
-                )
-                R.id.toolbar_menu_history_item -> navigation.navigate(
-                    mainRouter.setScreen(
-                        fragment = HistoryFragment(),
+                        fragment = SearchFragment(),
                         isBackStack = true
                     )
                 )

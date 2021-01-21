@@ -11,8 +11,8 @@ import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.data.models.Image
-import com.aslnstbk.unsplash.common.view.LoadingError
-import com.aslnstbk.unsplash.common.view.ToolbarBuilder
+import com.aslnstbk.unsplash.common.presentation.view.LoadingError
+import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.navigation.Navigation
@@ -106,18 +106,18 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     }
 
     private fun fillData(image: Image) {
-        imageDetailsViewModel.addToHistory(image)
-
         ownerFullNameTextView.text = image.user.name
         ownerEmailTextView.text = EMAIL_TEXT_FORMAT.format(image.user.username)
 
         imageLoader.load(
             url = image.user.profile_photo.small,
-            target = ownerPhotoImageView
+            target = ownerPhotoImageView,
+            withCenterCrop = false
         )
         imageLoader.load(
             url = image.urls.regular,
-            target = imageImageView
+            target = imageImageView,
+            withCenterCrop = false
         )
         setFavoriteImage(isFavorite = image.isFavorite)
 

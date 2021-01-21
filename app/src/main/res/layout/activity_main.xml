@@ -22,7 +22,23 @@
             android:background="@color/colorPrimary"
             app:menu="@menu/home_toolbar_menu"
             app:navigationIcon="@drawable/ic_app_logo"
-            />
+            >
+
+            <EditText
+                android:id="@+id/activity_main_toolbar_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_size_16x"
+                android:backgroundTint="@color/white"
+                android:hint="@string/search"
+                android:inputType="text"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="@dimen/text_size_20x"
+                android:visibility="gone"
+                />
+
+        </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/activity_main_fragment_container"
@@ -39,6 +55,19 @@
             />
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/activity_main_fab_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_size_16x"
+        android:backgroundTint="@color/colorPrimary"
+        android:scaleType="center"
+        app:rippleColor="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_favorite_bold_white"
+        app:borderWidth="0dp"
+        />
 
     <ProgressBar
         android:id="@+id/activity_main_progress_bar"

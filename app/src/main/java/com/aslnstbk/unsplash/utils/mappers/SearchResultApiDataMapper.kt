@@ -1,7 +1,7 @@
 package com.aslnstbk.unsplash.utils.mappers
 
-import com.aslnstbk.unsplash.home.data.models.SearchResult
-import com.aslnstbk.unsplash.home.data.models.SearchResultApiData
+import com.aslnstbk.unsplash.search.data.models.SearchResult
+import com.aslnstbk.unsplash.search.data.models.SearchResultApiData
 
 class SearchResultApiDataMapper(
     private val imageApiDataMapper: ImageApiDataMapper

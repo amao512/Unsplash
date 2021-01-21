@@ -9,12 +9,20 @@ class DefaultImageLoader : ImageLoader {
 
     override fun load(
         url: String,
-        target: ImageView
+        target: ImageView,
+        withCenterCrop: Boolean
     ) {
-        Glide.with(target.context)
-            .load(url)
-            .placeholder(R.drawable.ic_default_thumbnail)
-            .centerCrop()
-            .into(target)
+        if (withCenterCrop){
+            Glide.with(target.context)
+                .load(url)
+                .placeholder(R.drawable.ic_default_thumbnail)
+                .centerCrop()
+                .into(target)
+        } else {
+            Glide.with(target.context)
+                .load(url)
+                .placeholder(R.drawable.ic_default_thumbnail)
+                .into(target)
+        }
     }
 }

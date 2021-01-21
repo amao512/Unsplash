@@ -6,7 +6,6 @@ import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
-import com.aslnstbk.unsplash.history.data.models.History
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,15 +36,6 @@ class ImageDetailsViewModel(
     fun removeFavoriteImage(image: Image) = CoroutineScope(Dispatchers.IO).launch {
         imageDetailsRepository.removeFavoriteImage(imageId = image.id)
         getFavoriteImages(image.id)
-    }
-
-    fun addToHistory(image: Image) = CoroutineScope(Dispatchers.IO).launch {
-        imageDetailsRepository.addToHistory(
-            History(
-                imageId = image.id,
-                imageUrl = image.urls.regular
-            )
-        )
     }
 
     private fun getFavoriteImages(imageId: String) {

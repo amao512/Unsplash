@@ -1,7 +1,7 @@
 package com.aslnstbk.unsplash.utils.mappers
 
-import com.aslnstbk.unsplash.common.data.models.UserProfilePhoto
-import com.aslnstbk.unsplash.common.data.models.api.UserProfilePhotoApiData
+import com.aslnstbk.unsplash.image_details.data.models.UserProfilePhoto
+import com.aslnstbk.unsplash.image_details.data.models.UserProfilePhotoApiData
 
 class UserProfilePhotoApiDataMapper {
 

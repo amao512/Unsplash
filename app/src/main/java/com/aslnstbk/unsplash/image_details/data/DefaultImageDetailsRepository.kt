@@ -4,7 +4,6 @@ import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.common.data.models.api.ImageApiData
 import com.aslnstbk.unsplash.common.data.room.AppDatabase
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
-import com.aslnstbk.unsplash.history.data.models.History
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
 import com.aslnstbk.unsplash.utils.mappers.ImageApiDataMapper
 import retrofit2.Call
@@ -60,9 +59,5 @@ class DefaultImageDetailsRepository(
         }
 
         return isFavorite
-    }
-
-    override suspend fun addToHistory(history: History) {
-        appDatabase.historyDao().insert(history)
     }
 }

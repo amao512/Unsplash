@@ -2,7 +2,7 @@ package com.aslnstbk.unsplash.home.di
 
 import com.aslnstbk.unsplash.common.data.retrofit.RetrofitClient
 import com.aslnstbk.unsplash.home.data.DefaultHomeRepository
-import com.aslnstbk.unsplash.home.data.HomeDataSource
+import com.aslnstbk.unsplash.home.data.HomeApiClient
 import com.aslnstbk.unsplash.home.domain.HomeRepository
 import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,14 +18,13 @@ val homeModule = module {
     single {
         val retrofit = RetrofitClient.instance
 
-        retrofit.create(HomeDataSource::class.java)
+        retrofit.create(HomeApiClient::class.java)
     }
 
-    single {
+    factory {
         DefaultHomeRepository(
-            homeDataSource = get(),
-            imageApiDataMapper = get(),
-            searchResultApiDataMapper = get()
+            homeApiClient = get(),
+            imageApiDataMapper = get()
         ) as HomeRepository
     }
 }
