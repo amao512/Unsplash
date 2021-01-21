@@ -6,15 +6,13 @@ import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.home.domain.HomeRepository
-import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
-import com.aslnstbk.unsplash.home.presentation.models.ImageListItem
-import com.aslnstbk.unsplash.home.presentation.models.SearchBarItem
+import com.aslnstbk.unsplash.images_line.ImageItem
 
 class HomeViewModel(
     private val homeRepository: HomeRepository
 ) : ViewModel(){
 
-    val imagesLiveData: MutableLiveData<ResponseData<List<HomeListItem>, String>> = MutableLiveData()
+    val imagesLiveData: MutableLiveData<ResponseData<List<ImageItem>, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
     fun onStart(){
@@ -22,7 +20,7 @@ class HomeViewModel(
 
         homeRepository.getImages(
             result = {
-                imagesLiveData.value = ResponseData.Success(prepareImagesLiveData(it))
+                imagesLiveData.value = ResponseData.Success(getImageItemsList(it))
                 progressLiveData.value = ProgressState.Done
             },
             fail = {
@@ -38,7 +36,7 @@ class HomeViewModel(
         homeRepository.searchImages(
             query = query,
             result = {
-                imagesLiveData.value = ResponseData.Success(prepareImagesLiveData(it.results))
+                imagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))
                 progressLiveData.value = ProgressState.Done
             },
             fail = {
@@ -48,17 +46,9 @@ class HomeViewModel(
         )
     }
 
-    private fun prepareImagesLiveData(imageList: List<Image>): List<HomeListItem> {
-        return listOf(getSearchBarItem()) + getImageListItems(imageList)
-    }
-
-    private fun getSearchBarItem(): HomeListItem {
-        return SearchBarItem(data = 0)
-    }
-
-    private fun getImageListItems(imageList: List<Image>): List<HomeListItem> {
+    private fun getImageItemsList(imageList: List<Image>): List<ImageItem> {
         return imageList.map {
-            ImageListItem(
+            ImageItem(
                 imageId = it.id,
                 imageUrl = it.urls.regular
             )

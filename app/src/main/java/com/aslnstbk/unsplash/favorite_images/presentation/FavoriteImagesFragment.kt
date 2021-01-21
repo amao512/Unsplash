@@ -12,12 +12,12 @@ import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.view.ToolbarBuilder
-import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
-import com.aslnstbk.unsplash.favorite_images.presentation.view.FavoriteImagesAdapter
 import com.aslnstbk.unsplash.favorite_images.presentation.viewModel.FavoriteImagesViewModel
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
+import com.aslnstbk.unsplash.images_line.ImageItem
+import com.aslnstbk.unsplash.images_line.ImagesLineAdapter
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.main.MainRouter
 import com.aslnstbk.unsplash.navigation.Navigation
@@ -33,10 +33,10 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
     private val navigation: Navigation by inject()
     private val mainRouter: MainRouter by inject()
 
-    private val favoriteImagesAdapter: FavoriteImagesAdapter by lazy {
-        FavoriteImagesAdapter(
+    private val imagesLineAdapter: ImagesLineAdapter by lazy {
+        ImagesLineAdapter(
             imageLoader = imageLoader,
-            imageClickListener = this
+            imageClickListener = this,
         )
     }
 
@@ -73,7 +73,7 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
         emptyTextView = view.findViewById(R.id.fragment_favorite_images_text_view_empty)
         recyclerView = view.findViewById(R.id.fragment_favorite_images_recycler_view)
-        recyclerView.adapter = favoriteImagesAdapter
+        recyclerView.adapter = imagesLineAdapter
     }
 
     private fun buildToolbar() {
@@ -96,12 +96,12 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
         favoriteImagesViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
     }
 
-    private fun handleFavoriteImages(list: List<FavoriteImage>) {
+    private fun handleFavoriteImages(list: List<ImageItem>) {
         if (list.isEmpty()) {
             emptyTextView.show()
             recyclerView.hide()
         } else {
-            favoriteImagesAdapter.setList(list)
+            imagesLineAdapter.setList(list)
             recyclerView.show()
             emptyTextView.hide()
         }

@@ -16,11 +16,11 @@ import com.aslnstbk.unsplash.common.view.ToolbarBuilder
 import com.aslnstbk.unsplash.favorite_images.presentation.FavoriteImagesFragment
 import com.aslnstbk.unsplash.history.presentation.HistoryFragment
 import com.aslnstbk.unsplash.home.data.ImageClickListener
-import com.aslnstbk.unsplash.home.presentation.models.HomeListItem
-import com.aslnstbk.unsplash.home.presentation.view.HomeAdapter
 import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
+import com.aslnstbk.unsplash.images_line.ImageItem
+import com.aslnstbk.unsplash.images_line.ImagesLineAdapter
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.main.MainRouter
 import com.aslnstbk.unsplash.navigation.Navigation
@@ -42,11 +42,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener, Searc
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
 
-    private val homeAdapter: HomeAdapter by lazy {
-        HomeAdapter(
+    private val imagesLineAdapter: ImagesLineAdapter by lazy {
+        ImagesLineAdapter(
             imageLoader = imageLoader,
             imageClickListener = this,
-            searchListener = this
         )
     }
 
@@ -85,7 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener, Searc
     private fun initViews(view: View) {
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
         recyclerView = view.findViewById(R.id.fragment_home_recycler_view)
-        recyclerView.adapter = homeAdapter
+        recyclerView.adapter = imagesLineAdapter
     }
 
     private fun buildToolbar() {
@@ -96,7 +95,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener, Searc
 
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.toolbar_menu_favorites_item -> navigation.navigate(
+                R.id.home_toolbar_menu_item_search -> navigation.navigate(
                     mainRouter.setScreen(
                         fragment = FavoriteImagesFragment(),
                         isBackStack = true
@@ -119,10 +118,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener, Searc
         homeViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
     }
 
-    private fun handleImages(responseData: ResponseData<List<HomeListItem>, String>) {
+    private fun handleImages(responseData: ResponseData<List<ImageItem>, String>) {
         when (responseData) {
             is ResponseData.Success -> {
-                homeAdapter.setPhotoList(responseData.result)
+                imagesLineAdapter.setList(responseData.result)
                 loadingError.hide()
             }
             is ResponseData.Error -> {
