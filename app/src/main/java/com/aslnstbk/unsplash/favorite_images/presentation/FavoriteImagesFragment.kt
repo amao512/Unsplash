@@ -57,7 +57,13 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
         observeLiveData()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        favoriteFab.show()
+    }
+
     override fun onImageClick(imageId: String) {
+        favoriteFab.show()
         val imageDetailsFragment = ImageDetailsFragment()
         val args = Bundle()
         args.putString(IMAGE_ID_BUNDLE_KEY, imageId)
@@ -87,7 +93,6 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
 
         toolbar.setNavigationOnClickListener {
             navigation.back()
-            favoriteFab.show()
         }
     }
 
