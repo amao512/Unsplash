@@ -59,11 +59,16 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchViewModel.onStart()
-
-        initViews(view)
         buildToolbar()
+        initViews(view)
+        initListeners()
         observeLiveData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        toolbarEditText.hide()
     }
 
     override fun onSearchHistoryDelete(
@@ -101,9 +106,16 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         toolbarEditText = APP_ACTIVITY.findViewById(R.id.activity_main_toolbar_edit_text)
         toolbarEditText.show()
         recyclerView = view.findViewById(R.id.fragment_search_recycler_view)
-        recyclerView.adapter = searchAdapter
+        recyclerView.adapter = imagesLineAdapter
+    }
 
-        toolbarEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+    private fun initListeners(){
+        toolbarEditText.setOnClickListener {
+            searchViewModel.onStart()
+            recyclerView.adapter = searchAdapter
+        }
+
+        toolbarEditText.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 onSearch(query = toolbarEditText.text.toString())
 
@@ -120,8 +132,16 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
 
     private fun buildToolbar() {
         toolbar = ToolbarBuilder()
+            .setMenu(R.menu.search_toolbar_menu)
             .setNavigationIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_back))
             .build(activity = APP_ACTIVITY)
+
+        toolbar.setOnMenuItemClickListener {
+            toolbarEditText.text.clear()
+            recyclerView.adapter = imagesLineAdapter
+
+            true
+        }
 
         toolbar.setNavigationOnClickListener {
             navigation.back()
@@ -141,19 +161,22 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
 
     private fun handleImages(responseData: ResponseData<List<ImageItem>, String>) {
         when (responseData) {
-            is ResponseData.Success -> {
-                imagesLineAdapter.setList(responseData.result)
-                loadingError.hide()
-            }
-            is ResponseData.Error -> {
-                loadingError.show()
-                loadingError.onRetryClick {
-                    searchViewModel.onSearchImage(query = toolbarEditText.text.toString())
-                }
-            }
+            is ResponseData.Success -> showImages(responseData.result)
+            is ResponseData.Error -> showError()
         }
     }
 
+    private fun showImages(list: List<ImageItem>){
+        imagesLineAdapter.setList(list)
+        loadingError.hide()
+    }
+
+    private fun showError(){
+        loadingError.show()
+        loadingError.onRetryClick {
+            searchViewModel.onSearchImage(query = toolbarEditText.text.toString())
+        }
+    }
 
     private fun handleProgress(progressState: ProgressState) {
         when (progressState) {

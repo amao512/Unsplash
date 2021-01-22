@@ -20,6 +20,17 @@ class DefaultSearchRepository(
         return appDatabase.searchHistoryDao().getAllSearchHistory()
     }
 
+    override suspend fun checkByQuery(query: String): Boolean {
+        val searchHistory: SearchHistory? = appDatabase.searchHistoryDao().getByQuery(query)
+        var isExists = false
+
+        if (searchHistory != null){
+            isExists = true
+        }
+
+        return isExists
+    }
+
     override suspend fun addSearchHistory(searchHistory: SearchHistory) {
         appDatabase.searchHistoryDao().insert(searchHistory)
     }

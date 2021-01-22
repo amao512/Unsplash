@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "table_search_history")
-class SearchHistory (
+data class SearchHistory (
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val query: String

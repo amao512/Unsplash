@@ -12,6 +12,9 @@ interface SearchHistoryDao {
     @Query("SELECT * FROM table_search_history")
     fun getAllSearchHistory(): List<SearchHistory>
 
+    @Query("SELECT * FROM table_search_history WHERE `query` = :query")
+    fun getByQuery(query: String): SearchHistory
+
     @Insert
     fun insert(searchHistory: SearchHistory)
 

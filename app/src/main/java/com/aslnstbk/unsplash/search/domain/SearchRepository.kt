@@ -10,6 +10,9 @@ interface SearchRepository {
     suspend fun getAllSearchHistory(): List<SearchHistory>
 
     @WorkerThread
+    suspend fun checkByQuery(query: String): Boolean
+
+    @WorkerThread
     suspend fun addSearchHistory(searchHistory: SearchHistory)
 
     @WorkerThread
