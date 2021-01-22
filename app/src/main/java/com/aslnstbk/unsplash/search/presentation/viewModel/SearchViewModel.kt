@@ -34,7 +34,7 @@ class SearchViewModel(
         searchRepository.searchImages(
             query = query,
             result = {
-                imagesLiveData.value = ResponseData.Success(getImageItemsList(it.results.reversed()))
+                imagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))
                 progressLiveData.value = ProgressState.Done
             },
             fail = {
@@ -47,7 +47,7 @@ class SearchViewModel(
     }
 
     private fun getAllSearchHistory() = CoroutineScope(Dispatchers.IO).launch {
-        searchHistoryLiveData.postValue(searchRepository.getAllSearchHistory())
+        searchHistoryLiveData.postValue(searchRepository.getAllSearchHistory().reversed())
     }
 
     private fun addSearchHistory(query: String) = CoroutineScope(Dispatchers.IO).launch {

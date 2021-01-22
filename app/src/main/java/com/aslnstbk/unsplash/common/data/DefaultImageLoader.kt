@@ -4,6 +4,10 @@ import android.widget.ImageView
 import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 
 class DefaultImageLoader : ImageLoader {
 
@@ -12,17 +16,16 @@ class DefaultImageLoader : ImageLoader {
         target: ImageView,
         withCenterCrop: Boolean
     ) {
-        if (withCenterCrop){
-            Glide.with(target.context)
-                .load(url)
-                .placeholder(R.drawable.ic_default_thumbnail)
-                .centerCrop()
-                .into(target)
+        val requestOptions = if (withCenterCrop) {
+            RequestOptions().transform(CenterCrop(), RoundedCorners(10))
         } else {
-            Glide.with(target.context)
-                .load(url)
-                .placeholder(R.drawable.ic_default_thumbnail)
-                .into(target)
+            RequestOptions().transform(FitCenter(), RoundedCorners(10))
         }
+
+        Glide.with(target.context)
+            .load(url)
+            .placeholder(R.drawable.ic_default_thumbnail)
+            .apply(requestOptions)
+            .into(target)
     }
 }

@@ -19,11 +19,11 @@
         android:id="@+id/fragment_favorite_images_text_view_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/fragment_favorite_images_empty"
         android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="@dimen/text_size_18x"
+        android:text="@string/fragment_favorite_images_empty"
         android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_18x"
+        android:textStyle="bold"
         android:visibility="gone"
         />
 

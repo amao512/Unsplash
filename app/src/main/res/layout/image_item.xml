@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginVertical="@dimen/margin_size_5x"
+    android:layout_marginHorizontal="@dimen/margin_size_10x"
     >
 
     <ImageView
         android:id="@+id/image_item_image"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="@dimen/image_height_size"
         />
 
 </FrameLayout>
