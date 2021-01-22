@@ -89,14 +89,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
             .build(activity = APP_ACTIVITY)
 
         toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.home_toolbar_menu_item_search -> navigation.navigate(
-                    mainRouter.setScreen(
-                        fragment = SearchFragment(),
-                        isBackStack = true
-                    )
+            navigation.navigate(
+                mainRouter.setScreen(
+                    fragment = SearchFragment(),
+                    isBackStack = true
                 )
-            }
+            )
 
             true
         }
@@ -109,16 +107,20 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
 
     private fun handleImages(responseData: ResponseData<List<ImageItem>, String>) {
         when (responseData) {
-            is ResponseData.Success -> {
-                imagesLineAdapter.setList(responseData.result)
-                loadingError.hide()
-            }
-            is ResponseData.Error -> {
-                loadingError.show()
-                loadingError.onRetryClick {
-                    homeViewModel.onStart()
-                }
-            }
+            is ResponseData.Success -> showImages(responseData.result)
+            is ResponseData.Error -> showLoadingError()
+        }
+    }
+
+    private fun showImages(list: List<ImageItem>) {
+        imagesLineAdapter.setList(list)
+        loadingError.hide()
+    }
+
+    private fun showLoadingError() {
+        loadingError.show()
+        loadingError.onRetryClick {
+            homeViewModel.onStart()
         }
     }
 

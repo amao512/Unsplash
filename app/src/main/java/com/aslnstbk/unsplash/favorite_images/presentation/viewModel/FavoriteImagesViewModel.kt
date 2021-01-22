@@ -24,7 +24,7 @@ class FavoriteImagesViewModel(
 
     private fun getAllFavoriteImages() = CoroutineScope(Dispatchers.IO).launch {
         favoriteImagesLiveData.postValue(
-            prepareImagesList(favoriteImageRepository.getAllFavoriteImages())
+            prepareImagesList(favoriteImageRepository.getAllFavoriteImages().reversed())
         )
         progressLiveData.postValue(ProgressState.Done)
     }

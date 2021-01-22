@@ -3,6 +3,7 @@ package com.aslnstbk.unsplash.image_details.di
 import com.aslnstbk.unsplash.common.data.retrofit.RetrofitClient
 import com.aslnstbk.unsplash.image_details.data.DefaultImageDetailsRepository
 import com.aslnstbk.unsplash.image_details.data.ImageDetailsDataSource
+import com.aslnstbk.unsplash.image_details.data.ImageDownload
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -13,7 +14,8 @@ val imageDetailsModule = module {
 
     viewModel {
         ImageDetailsViewModel(
-            imageDetailsRepository = get()
+            imageDetailsRepository = get(),
+            imageDownload = get()
         )
     }
 
@@ -21,6 +23,10 @@ val imageDetailsModule = module {
         val retrofit: Retrofit = RetrofitClient.instance
 
         retrofit.create(ImageDetailsDataSource::class.java)
+    }
+
+    single {
+        ImageDownload()
     }
 
     factory {

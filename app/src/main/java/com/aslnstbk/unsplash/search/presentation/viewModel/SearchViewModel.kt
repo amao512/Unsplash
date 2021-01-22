@@ -34,7 +34,7 @@ class SearchViewModel(
         searchRepository.searchImages(
             query = query,
             result = {
-                imagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))
+                imagesLiveData.value = ResponseData.Success(getImageItemsList(it.results.reversed()))
                 progressLiveData.value = ProgressState.Done
             },
             fail = {
