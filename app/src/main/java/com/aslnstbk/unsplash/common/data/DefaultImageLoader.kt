@@ -24,7 +24,11 @@ class DefaultImageLoader : ImageLoader {
 
         Glide.with(target.context)
             .load(url)
-            .placeholder(R.drawable.ic_default_thumbnail)
+            .thumbnail(
+                Glide.with(target.context)
+                    .load(R.drawable.ic_loading)
+                    .apply(requestOptions)
+            )
             .apply(requestOptions)
             .into(target)
     }

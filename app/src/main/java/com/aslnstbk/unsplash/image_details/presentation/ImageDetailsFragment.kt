@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.aslnstbk.unsplash.R
+import com.aslnstbk.unsplash.common.data.ImageViewer
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
@@ -32,6 +33,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     private val imageDetailsViewModel: ImageDetailsViewModel by viewModel()
     private val navigation: Navigation by inject()
     private val imageLoader: ImageLoader by inject()
+    private val imageViewer: ImageViewer by inject()
     private val loadingError: LoadingError by inject()
 
     private lateinit var toolbar: Toolbar
@@ -76,10 +78,12 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
 
     private fun buildToolbar() {
         toolbar = ToolbarBuilder()
-            .setNavigationIcon(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_arrow_back
-            ))
+            .setNavigationIcon(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_arrow_back
+                )
+            )
             .build(activity = APP_ACTIVITY)
 
         toolbar.setNavigationOnClickListener {
@@ -123,6 +127,13 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
             target = imageImageView,
             withCenterCrop = false
         )
+
+        imageImageView.setOnClickListener {
+            imageViewer.show(
+                context = requireContext(),
+                images = listOf(image.urls.full)
+            )
+        }
     }
 
     private fun setFavoriteImage(isFavorite: Boolean) = if (isFavorite) {

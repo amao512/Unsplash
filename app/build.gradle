@@ -68,4 +68,8 @@ dependencies {
     // Coroutines
     implementation "androidx.room:room-ktx:$room_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+    // ImageViewer
+    implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
+
 }

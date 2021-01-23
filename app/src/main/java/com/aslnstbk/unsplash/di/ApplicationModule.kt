@@ -1,6 +1,7 @@
 package com.aslnstbk.unsplash.di
 
 import com.aslnstbk.unsplash.common.data.DefaultImageLoader
+import com.aslnstbk.unsplash.common.data.ImageViewer
 import com.aslnstbk.unsplash.common.data.room.AppDatabase
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.presentation.view.LoadingError
@@ -21,5 +22,11 @@ val applicationModule = module {
 
     factory {
         DefaultImageLoader() as ImageLoader
+    }
+
+    factory {
+        ImageViewer(
+            imageLoader = get()
+        )
     }
 }
