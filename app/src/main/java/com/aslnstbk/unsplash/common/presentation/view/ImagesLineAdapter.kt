@@ -31,6 +31,11 @@ class ImagesLineAdapter(
         notifyDataSetChanged()
     }
 
+    fun setMoreList(imagesList: List<ImageItem>){
+        this.imagesList.addAll(imagesList)
+        notifyDataSetChanged()
+    }
+
     private fun createImageViewHolder(parent: ViewGroup): ImageViewHolder {
         return ImageViewHolder(
             LayoutInflater.from(parent.context).inflate(

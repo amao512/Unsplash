@@ -8,5 +8,8 @@ import retrofit2.http.Query
 interface SearchApiClient {
 
     @GET("search/photos")
-    fun searchImages(@Query("query") query: String): Call<SearchResultApiData>
+    fun searchImages(
+        @Query("query") query: String,
+        @Query("page") page: Int
+    ): Call<SearchResultApiData>
 }

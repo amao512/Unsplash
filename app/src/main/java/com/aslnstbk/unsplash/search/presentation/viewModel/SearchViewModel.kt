@@ -18,7 +18,11 @@ class SearchViewModel(
 
     val searchHistoryLiveData: MutableLiveData<List<SearchHistory>> = MutableLiveData()
     val imagesLiveData: MutableLiveData<ResponseData<List<ImageItem>, String>> = MutableLiveData()
+    val moreImagesLiveData: MutableLiveData<ResponseData<List<ImageItem>, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
+    val moreProgressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
+
+    private var page = 1
 
     fun onStart() {
         getAllSearchHistory()
@@ -33,6 +37,7 @@ class SearchViewModel(
 
         searchRepository.searchImages(
             query = query,
+            page = page,
             result = {
                 imagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))
                 progressLiveData.value = ProgressState.Done
@@ -44,6 +49,24 @@ class SearchViewModel(
         )
 
         addSearchHistory(query = query)
+    }
+
+    fun getMoreImages(query: String) {
+        page++
+        moreProgressLiveData.value = ProgressState.Loading
+        searchRepository.searchImages(
+            query = query,
+            page = page,
+            result = {
+                moreImagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))
+                moreProgressLiveData.value = ProgressState.Done
+            },
+            fail = {
+                moreImagesLiveData.value = ResponseData.Error(it.toString())
+                moreProgressLiveData.value = ProgressState.Done
+            }
+        )
+
     }
 
     private fun getAllSearchHistory() = CoroutineScope(Dispatchers.IO).launch {

@@ -55,6 +55,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     private lateinit var toolbarEditText: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerProgressBar: ProgressBar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -107,6 +108,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         toolbarEditText.show()
         recyclerView = view.findViewById(R.id.fragment_search_recycler_view)
         recyclerView.adapter = imagesLineAdapter
+        recyclerProgressBar = view.findViewById(R.id.fragment_search_progress_bar)
     }
 
     private fun initListeners(){
@@ -122,6 +124,16 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
                 return@OnKeyListener true
             }
             false
+        })
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    searchViewModel.getMoreImages(query = toolbarEditText.text.toString())
+                }
+            }
         })
     }
 
@@ -152,7 +164,9 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     private fun observeLiveData() {
         searchViewModel.searchHistoryLiveData.observe(viewLifecycleOwner, ::handleSearchHistory)
         searchViewModel.imagesLiveData.observe(viewLifecycleOwner, ::handleImages)
+        searchViewModel.moreImagesLiveData.observe(viewLifecycleOwner, ::handleMoreImages)
         searchViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
+        searchViewModel.moreProgressLiveData.observe(viewLifecycleOwner, ::handleMoreProgress)
     }
 
     private fun handleSearchHistory(list: List<SearchHistory>) {
@@ -162,6 +176,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     private fun handleImages(responseData: ResponseData<List<ImageItem>, String>) {
         when (responseData) {
             is ResponseData.Success -> showImages(responseData.result)
+            is ResponseData.Error -> showError()
+        }
+    }
+
+    private fun handleMoreImages(responseData: ResponseData<List<ImageItem>, String>) {
+        when (responseData) {
+            is ResponseData.Success -> imagesLineAdapter.setMoreList(responseData.result)
             is ResponseData.Error -> showError()
         }
     }
@@ -182,6 +203,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         when (progressState) {
             is ProgressState.Loading -> progressBar.show()
             is ProgressState.Done -> progressBar.hide()
+        }
+    }
+
+    private fun handleMoreProgress(progressState: ProgressState?) {
+        when (progressState) {
+            is ProgressState.Loading -> recyclerProgressBar.show()
+            is ProgressState.Done -> recyclerProgressBar.hide()
         }
     }
 }

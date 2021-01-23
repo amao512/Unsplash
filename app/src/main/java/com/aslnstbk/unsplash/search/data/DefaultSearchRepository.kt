@@ -41,10 +41,14 @@ class DefaultSearchRepository(
 
     override fun searchImages(
         query: String,
+        page: Int,
         result: (SearchResult) -> Unit,
         fail: (String?) -> Unit
     ) {
-        searchApiClient.searchImages(query = query).enqueue(object : Callback<SearchResultApiData> {
+        searchApiClient.searchImages(
+            query = query,
+            page = page
+        ).enqueue(object : Callback<SearchResultApiData> {
             override fun onResponse(
                 call: Call<SearchResultApiData>,
                 response: Response<SearchResultApiData>

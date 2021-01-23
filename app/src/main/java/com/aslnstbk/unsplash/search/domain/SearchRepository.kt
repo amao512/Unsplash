@@ -21,6 +21,7 @@ interface SearchRepository {
     @WorkerThread
     fun searchImages(
         query: String,
+        page: Int,
         result: (SearchResult) -> Unit,
         fail: (String?) -> Unit
     )
