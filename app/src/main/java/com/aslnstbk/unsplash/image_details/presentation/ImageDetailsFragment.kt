@@ -131,7 +131,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         imageImageView.setOnClickListener {
             imageViewer.show(
                 context = requireContext(),
-                images = listOf(image.urls.full)
+                images = listOf(image.urls.regular)
             )
         }
     }
