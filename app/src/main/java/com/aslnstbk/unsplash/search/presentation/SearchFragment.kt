@@ -18,17 +18,19 @@ import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
 import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
+import com.aslnstbk.unsplash.image_details.presentation.TAG_BUNDLE_KEY
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.main.MainRouter
 import com.aslnstbk.unsplash.navigation.Navigation
 import com.aslnstbk.unsplash.search.data.models.QueryHistory
 import com.aslnstbk.unsplash.search.presentation.models.SearchItem
-import com.aslnstbk.unsplash.search.presentation.view.query.QueryAdapter
 import com.aslnstbk.unsplash.search.presentation.view.SearchListener
+import com.aslnstbk.unsplash.search.presentation.view.query.QueryAdapter
 import com.aslnstbk.unsplash.search.presentation.view.search_image.SearchImagesAdapter
 import com.aslnstbk.unsplash.search.presentation.viewModel.SearchViewModel
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
+import com.aslnstbk.unsplash.utils.mappers.EMPTY_STRING
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -64,6 +66,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         initViews(view)
         initListeners()
         observeLiveData()
+        getTagFromBundle()
     }
 
     override fun onDestroyView() {
@@ -108,6 +111,15 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
                 isBackStack = true
             )
         )
+    }
+
+    private fun getTagFromBundle() {
+        val tag: String = arguments?.getString(TAG_BUNDLE_KEY) ?: EMPTY_STRING
+
+        if (tag.isNotBlank()) {
+            onSearch(query = tag)
+            toolbarEditText.setText(tag)
+        }
     }
 
     private fun initViews(view: View) {

@@ -11,9 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_size_16x"
         android:paddingHorizontal="@dimen/padding_size_16x"
         android:paddingTop="@dimen/padding_size_16x"
-        android:layout_marginBottom="@dimen/margin_size_16x"
         >
 
         <ImageView
@@ -30,6 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_size_16x"
+            android:maxLines="1"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_20x"
             android:textStyle="bold"
@@ -80,6 +81,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image_owner_photo"
+            />
+
+        <org.apmem.tools.layouts.FlowLayout
+            android:id="@+id/fragment_image_details_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/padding_size_10x"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

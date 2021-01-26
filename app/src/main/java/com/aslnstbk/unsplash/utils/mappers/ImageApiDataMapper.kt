@@ -9,7 +9,8 @@ const val DEFAULT_INT = 0
 class ImageApiDataMapper(
     private val imageUrlsApiDataMapper: ImageUrlsApiDataMapper,
     private val imageLinksApiDataMapper: ImageLinksApiDataMapper,
-    private val imageUserApiDataMapper: ImageUserApiDataMapper
+    private val imageUserApiDataMapper: ImageUserApiDataMapper,
+    private val imageTagApiDataMapper: ImageTagApiDataMapper
 ) {
 
     fun map(imageApiDataList: List<ImageApiData>?): List<Image> {
@@ -31,7 +32,8 @@ class ImageApiDataMapper(
                 links = imageLinksApiDataMapper.map(it.links),
                 categories = it.categories,
                 likes = it.likes ?: DEFAULT_INT,
-                user = imageUserApiDataMapper.map(it.user)
+                user = imageUserApiDataMapper.map(it.user),
+                tags = imageTagApiDataMapper.map(it.tags)
             )
         }
     }
@@ -52,7 +54,8 @@ class ImageApiDataMapper(
             links = imageLinksApiDataMapper.map(imageApiData?.links),
             categories = imageApiData?.categories ?: EMPTY_STRING,
             likes = imageApiData?.likes ?: DEFAULT_INT,
-            user = imageUserApiDataMapper.map(imageApiData?.user)
+            user = imageUserApiDataMapper.map(imageApiData?.user),
+            tags = imageTagApiDataMapper.map(imageApiData?.tags)
         )
     }
 }

@@ -72,4 +72,7 @@ dependencies {
     // ImageViewer
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
 
+    // for Staggered layout flow tags
+    implementation 'org.apmem.tools:layouts:1.10@aar'
+
 }

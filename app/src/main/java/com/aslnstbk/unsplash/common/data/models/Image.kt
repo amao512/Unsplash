@@ -15,7 +15,8 @@ data class Image(
     val links: ImageLinks,
     val categories: Any,
     val likes: Int,
-    val user: ImageUser
+    val user: ImageUser,
+    val tags: List<ImageTag>
 ) {
     var isFavorite: Boolean = false
 }

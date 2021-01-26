@@ -34,5 +34,7 @@ data class ImageApiData(
     @JsonProperty("likes")
     val likes: Int?,
     @JsonProperty("user")
-    val user: ImageUserApiData?
+    val user: ImageUserApiData?,
+    @JsonProperty("tags")
+    val tags: List<ImageTagApiData>?
 )

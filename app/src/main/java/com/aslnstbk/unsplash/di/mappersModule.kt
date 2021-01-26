@@ -9,7 +9,8 @@ val mappersModule = module {
         ImageApiDataMapper(
             imageUrlsApiDataMapper = get(),
             imageLinksApiDataMapper = get(),
-            imageUserApiDataMapper = get()
+            imageUserApiDataMapper = get(),
+            imageTagApiDataMapper = get()
         )
     }
 
@@ -35,5 +36,9 @@ val mappersModule = module {
         SearchResultApiDataMapper(
             imageApiDataMapper = get()
         )
+    }
+
+    single {
+        ImageTagApiDataMapper()
     }
 }
