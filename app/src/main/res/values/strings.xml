@@ -7,4 +7,7 @@
 
     <string name="menu_item_search">Search</string>
     <string name="menu_item_clear">Clear</string>
+
+    <string name="loading_error_text">Something went wrong</string>
+    <string name="loading_error_retry_text">Retry</string>
 </resources>

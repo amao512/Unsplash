@@ -13,8 +13,6 @@ import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
-import com.aslnstbk.unsplash.common.presentation.models.ImageItem
-import com.aslnstbk.unsplash.common.presentation.view.ImagesLineAdapter
 import com.aslnstbk.unsplash.common.presentation.view.LoadingError
 import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.home.data.ImageClickListener
@@ -23,9 +21,11 @@ import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.main.MainRouter
 import com.aslnstbk.unsplash.navigation.Navigation
-import com.aslnstbk.unsplash.search.data.models.SearchHistory
-import com.aslnstbk.unsplash.search.presentation.view.SearchAdapter
+import com.aslnstbk.unsplash.search.data.models.QueryHistory
+import com.aslnstbk.unsplash.search.presentation.models.SearchItem
+import com.aslnstbk.unsplash.search.presentation.view.query.QueryAdapter
 import com.aslnstbk.unsplash.search.presentation.view.SearchListener
+import com.aslnstbk.unsplash.search.presentation.view.search_image.SearchImagesAdapter
 import com.aslnstbk.unsplash.search.presentation.viewModel.SearchViewModel
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
@@ -40,14 +40,15 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     private val imageLoader: ImageLoader by inject()
     private val loadingError: LoadingError by inject()
 
-    private val searchAdapter: SearchAdapter by lazy {
-        SearchAdapter(searchListener = this)
+    private val queryAdapter: QueryAdapter by lazy {
+        QueryAdapter(searchListener = this)
     }
 
-    private val imagesLineAdapter: ImagesLineAdapter by lazy {
-        ImagesLineAdapter(
+    private val searchImagesAdapter: SearchImagesAdapter by lazy {
+        SearchImagesAdapter(
             imageClickListener = this,
-            imageLoader = imageLoader
+            imageLoader = imageLoader,
+            searchListener = this
         )
     }
 
@@ -55,7 +56,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     private lateinit var toolbarEditText: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
-    private lateinit var recyclerProgressBar: ProgressBar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,20 +72,28 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         toolbarEditText.hide()
     }
 
-    override fun onSearchHistoryDelete(
-        searchHistory: SearchHistory,
+    override fun onQueryHistoryDelete(
+        queryHistory: QueryHistory,
         position: Int
     ) {
-        searchViewModel.deleteSearchHistory(searchHistory)
-        searchAdapter.removeFromList(
-            searchHistory = searchHistory,
+        searchViewModel.deleteSearchHistory(queryHistory)
+        queryAdapter.removeFromList(
+            queryHistory = queryHistory,
             position = position
         )
     }
 
-    override fun onSearchHistoryClick(query: String) {
+    override fun onQueryHistoryClick(query: String) {
         toolbarEditText.setText(query)
         onSearch(query = query)
+    }
+
+    override fun onMoreRetryClick() {
+        searchImagesAdapter.changeMoreLoadingItem(
+            isLoading = true,
+            isError = false
+        )
+        searchViewModel.getMoreImages(query = toolbarEditText.text.toString())
     }
 
     override fun onImageClick(imageId: String) {
@@ -107,14 +115,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         toolbarEditText = APP_ACTIVITY.findViewById(R.id.activity_main_toolbar_edit_text)
         toolbarEditText.show()
         recyclerView = view.findViewById(R.id.fragment_search_recycler_view)
-        recyclerView.adapter = imagesLineAdapter
-        recyclerProgressBar = view.findViewById(R.id.fragment_search_progress_bar)
+        recyclerView.adapter = searchImagesAdapter
     }
 
     private fun initListeners(){
         toolbarEditText.setOnClickListener {
             searchViewModel.onStart()
-            recyclerView.adapter = searchAdapter
+            recyclerView.adapter = queryAdapter
         }
 
         toolbarEditText.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
@@ -133,8 +140,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
 
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     searchViewModel.getMoreImages(query = toolbarEditText.text.toString())
-                } else {
-                    recyclerProgressBar.hide()
                 }
             }
         })
@@ -142,7 +147,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
 
     private fun onSearch(query: String){
         searchViewModel.onSearchImage(query = query)
-        recyclerView.adapter = imagesLineAdapter
+        recyclerView.adapter = searchImagesAdapter
     }
 
     private fun buildToolbar() {
@@ -153,7 +158,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
 
         toolbar.setOnMenuItemClickListener {
             toolbarEditText.text.clear()
-            recyclerView.adapter = imagesLineAdapter
+            recyclerView.adapter = searchImagesAdapter
 
             true
         }
@@ -165,33 +170,25 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     }
 
     private fun observeLiveData() {
-        searchViewModel.searchHistoryLiveData.observe(viewLifecycleOwner, ::handleSearchHistory)
+        searchViewModel.queryHistoryLiveData.observe(viewLifecycleOwner, ::handleSearchHistory)
         searchViewModel.imagesLiveData.observe(viewLifecycleOwner, ::handleImages)
         searchViewModel.moreImagesLiveData.observe(viewLifecycleOwner, ::handleMoreImages)
         searchViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
-        searchViewModel.moreProgressLiveData.observe(viewLifecycleOwner, ::handleMoreProgress)
     }
 
-    private fun handleSearchHistory(list: List<SearchHistory>) {
-        searchAdapter.setList(list)
+    private fun handleSearchHistory(list: List<QueryHistory>) {
+        queryAdapter.setList(list)
     }
 
-    private fun handleImages(responseData: ResponseData<List<ImageItem>, String>) {
+    private fun handleImages(responseData: ResponseData<List<SearchItem>, String>) {
         when (responseData) {
             is ResponseData.Success -> showImages(responseData.result)
             is ResponseData.Error -> showError()
         }
     }
 
-    private fun handleMoreImages(responseData: ResponseData<List<ImageItem>, String>) {
-        when (responseData) {
-            is ResponseData.Success -> imagesLineAdapter.setMoreList(responseData.result)
-            is ResponseData.Error -> showError()
-        }
-    }
-
-    private fun showImages(list: List<ImageItem>){
-        imagesLineAdapter.setList(list)
+    private fun showImages(list: List<SearchItem>){
+        searchImagesAdapter.setList(list)
         loadingError.hide()
     }
 
@@ -202,17 +199,23 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         }
     }
 
+    private fun handleMoreImages(responseData: ResponseData<List<SearchItem>, String>) {
+        when (responseData) {
+            is ResponseData.Success -> {
+                searchImagesAdapter.hideLoadingItem()
+                searchImagesAdapter.setMoreList(responseData.result)
+            }
+            is ResponseData.Error -> searchImagesAdapter.changeMoreLoadingItem(
+                isLoading = false,
+                isError = true
+            )
+        }
+    }
+
     private fun handleProgress(progressState: ProgressState) {
         when (progressState) {
             is ProgressState.Loading -> progressBar.show()
             is ProgressState.Done -> progressBar.hide()
-        }
-    }
-
-    private fun handleMoreProgress(progressState: ProgressState?) {
-        when (progressState) {
-            is ProgressState.Loading -> recyclerProgressBar.show()
-            is ProgressState.Done -> recyclerProgressBar.hide()
         }
     }
 }

@@ -1,33 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.recyclerview.widget.RecyclerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_search_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_search_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingTop="@dimen/padding_size_5x"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/image_item"
-        />
-
-    <ProgressBar
-        android:id="@+id/fragment_search_progress_bar"
-        android:layout_width="@dimen/recycler_progress_bar_size"
-        android:layout_height="@dimen/recycler_progress_bar_size"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_size_10x"
-        android:indeterminateTint="@color/colorPrimary"
-        android:visibility="gone"
-        />
-
-</LinearLayout>
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/padding_size_5x"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    tools:listitem="@layout/image_item"
+    />

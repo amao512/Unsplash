@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
-import com.aslnstbk.unsplash.common.presentation.models.ImageItem
-import com.aslnstbk.unsplash.search.data.models.SearchHistory
+import com.aslnstbk.unsplash.search.data.models.QueryHistory
 import com.aslnstbk.unsplash.search.domain.SearchRepository
+import com.aslnstbk.unsplash.search.presentation.models.MoreLoadingItem
+import com.aslnstbk.unsplash.search.presentation.models.SearchImageItem
+import com.aslnstbk.unsplash.search.presentation.models.SearchItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,11 +18,10 @@ class SearchViewModel(
     private val searchRepository: SearchRepository
 ) : ViewModel() {
 
-    val searchHistoryLiveData: MutableLiveData<List<SearchHistory>> = MutableLiveData()
-    val imagesLiveData: MutableLiveData<ResponseData<List<ImageItem>, String>> = MutableLiveData()
-    val moreImagesLiveData: MutableLiveData<ResponseData<List<ImageItem>, String>> = MutableLiveData()
+    val queryHistoryLiveData: MutableLiveData<List<QueryHistory>> = MutableLiveData()
+    val imagesLiveData: MutableLiveData<ResponseData<List<SearchItem>, String>> = MutableLiveData()
+    val moreImagesLiveData: MutableLiveData<ResponseData<List<SearchItem>, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
-    val moreProgressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
     private var page = 1
 
@@ -28,8 +29,8 @@ class SearchViewModel(
         getAllSearchHistory()
     }
 
-    fun deleteSearchHistory(searchHistory: SearchHistory) = CoroutineScope(Dispatchers.IO).launch {
-        searchRepository.deleteSearchHistory(searchHistory)
+    fun deleteSearchHistory(queryHistory: QueryHistory) = CoroutineScope(Dispatchers.IO).launch {
+        searchRepository.deleteSearchHistory(queryHistory)
     }
 
     fun onSearchImage(query: String) {
@@ -53,40 +54,39 @@ class SearchViewModel(
 
     fun getMoreImages(query: String) {
         page++
-        moreProgressLiveData.value = ProgressState.Loading
+
         searchRepository.searchImages(
             query = query,
             page = page,
             result = {
                 moreImagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))
-                moreProgressLiveData.value = ProgressState.Done
             },
             fail = {
                 moreImagesLiveData.value = ResponseData.Error(it.toString())
-                moreProgressLiveData.value = ProgressState.Done
             }
         )
-
     }
 
     private fun getAllSearchHistory() = CoroutineScope(Dispatchers.IO).launch {
-        searchHistoryLiveData.postValue(searchRepository.getAllSearchHistory().reversed())
+        queryHistoryLiveData.postValue(searchRepository.getAllSearchHistory().reversed())
     }
 
     private fun addSearchHistory(query: String) = CoroutineScope(Dispatchers.IO).launch {
         if (!searchRepository.checkByQuery(query)) {
             searchRepository.addSearchHistory(
-                SearchHistory(query = query)
+                QueryHistory(query = query)
             )
         }
     }
 
-    private fun getImageItemsList(imageList: List<Image>): List<ImageItem> {
-        return imageList.map {
-            ImageItem(
+    private fun getImageItemsList(imageList: List<Image>): List<SearchItem> {
+        val searchImageItemList = imageList.map {
+            SearchImageItem(
                 imageId = it.id,
                 imageUrl = it.urls.regular
             )
         }
+
+        return searchImageItemList + listOf(MoreLoadingItem())
     }
 }

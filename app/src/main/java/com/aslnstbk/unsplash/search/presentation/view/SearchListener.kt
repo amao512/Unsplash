@@ -1,13 +1,15 @@
 package com.aslnstbk.unsplash.search.presentation.view
 
-import com.aslnstbk.unsplash.search.data.models.SearchHistory
+import com.aslnstbk.unsplash.search.data.models.QueryHistory
 
 interface SearchListener {
 
-    fun onSearchHistoryDelete(
-        searchHistory: SearchHistory,
+    fun onQueryHistoryDelete(
+        queryHistory: QueryHistory,
         position: Int
     )
 
-    fun onSearchHistoryClick(query: String)
+    fun onQueryHistoryClick(query: String)
+
+    fun onMoreRetryClick()
 }

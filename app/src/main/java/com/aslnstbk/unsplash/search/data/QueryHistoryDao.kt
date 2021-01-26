@@ -4,20 +4,20 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.aslnstbk.unsplash.search.data.models.SearchHistory
+import com.aslnstbk.unsplash.search.data.models.QueryHistory
 
 @Dao
-interface SearchHistoryDao {
+interface QueryHistoryDao {
 
     @Query("SELECT * FROM table_search_history")
-    fun getAllSearchHistory(): List<SearchHistory>
+    fun getAllSearchHistory(): List<QueryHistory>
 
     @Query("SELECT * FROM table_search_history WHERE `query` = :query")
-    fun getByQuery(query: String): SearchHistory
+    fun getByQuery(query: String): QueryHistory
 
     @Insert
-    fun insert(searchHistory: SearchHistory)
+    fun insert(queryHistory: QueryHistory)
 
     @Delete
-    fun delete(searchHistory: SearchHistory)
+    fun delete(queryHistory: QueryHistory)
 }

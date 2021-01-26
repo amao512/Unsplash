@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/more_loading_height"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingVertical="@dimen/padding_size_10x"
+    >
+
+    <ProgressBar
+        android:id="@+id/search_more_loading_item_progress_bar"
+        android:layout_width="@dimen/recycler_progress_bar_size"
+        android:layout_height="@dimen/recycler_progress_bar_size"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_size_10x"
+        android:indeterminateTint="@color/colorPrimary"
+        />
+
+    <LinearLayout
+        android:id="@+id/search_more_loading_item_error_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_error_text"
+            android:textSize="@dimen/text_size_18x"
+            />
+
+        <TextView
+            android:id="@+id/search_more_loading_item_retry_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:text="@string/loading_error_retry_text"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_18x"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+</LinearLayout>

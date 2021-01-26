@@ -3,7 +3,7 @@ package com.aslnstbk.unsplash.search.data
 import com.aslnstbk.unsplash.common.data.room.AppDatabase
 import com.aslnstbk.unsplash.search.data.models.SearchResult
 import com.aslnstbk.unsplash.search.data.models.SearchResultApiData
-import com.aslnstbk.unsplash.search.data.models.SearchHistory
+import com.aslnstbk.unsplash.search.data.models.QueryHistory
 import com.aslnstbk.unsplash.search.domain.SearchRepository
 import com.aslnstbk.unsplash.utils.mappers.SearchResultApiDataMapper
 import retrofit2.Call
@@ -16,27 +16,27 @@ class DefaultSearchRepository(
     private val searchResultApiDataMapper: SearchResultApiDataMapper
 ) : SearchRepository {
 
-    override suspend fun getAllSearchHistory(): List<SearchHistory> {
+    override suspend fun getAllSearchHistory(): List<QueryHistory> {
         return appDatabase.searchHistoryDao().getAllSearchHistory()
     }
 
     override suspend fun checkByQuery(query: String): Boolean {
-        val searchHistory: SearchHistory? = appDatabase.searchHistoryDao().getByQuery(query)
+        val queryHistory: QueryHistory? = appDatabase.searchHistoryDao().getByQuery(query)
         var isExists = false
 
-        if (searchHistory != null){
+        if (queryHistory != null){
             isExists = true
         }
 
         return isExists
     }
 
-    override suspend fun addSearchHistory(searchHistory: SearchHistory) {
-        appDatabase.searchHistoryDao().insert(searchHistory)
+    override suspend fun addSearchHistory(queryHistory: QueryHistory) {
+        appDatabase.searchHistoryDao().insert(queryHistory)
     }
 
-    override suspend fun deleteSearchHistory(searchHistory: SearchHistory) {
-        appDatabase.searchHistoryDao().delete(searchHistory)
+    override suspend fun deleteSearchHistory(queryHistory: QueryHistory) {
+        appDatabase.searchHistoryDao().delete(queryHistory)
     }
 
     override fun searchImages(

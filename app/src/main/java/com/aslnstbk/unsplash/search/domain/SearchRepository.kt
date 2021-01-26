@@ -2,21 +2,21 @@ package com.aslnstbk.unsplash.search.domain
 
 import androidx.annotation.WorkerThread
 import com.aslnstbk.unsplash.search.data.models.SearchResult
-import com.aslnstbk.unsplash.search.data.models.SearchHistory
+import com.aslnstbk.unsplash.search.data.models.QueryHistory
 
 interface SearchRepository {
 
     @WorkerThread
-    suspend fun getAllSearchHistory(): List<SearchHistory>
+    suspend fun getAllSearchHistory(): List<QueryHistory>
 
     @WorkerThread
     suspend fun checkByQuery(query: String): Boolean
 
     @WorkerThread
-    suspend fun addSearchHistory(searchHistory: SearchHistory)
+    suspend fun addSearchHistory(searchHistory: QueryHistory)
 
     @WorkerThread
-    suspend fun deleteSearchHistory(searchHistory: SearchHistory)
+    suspend fun deleteSearchHistory(queryHistory: QueryHistory)
 
     @WorkerThread
     fun searchImages(

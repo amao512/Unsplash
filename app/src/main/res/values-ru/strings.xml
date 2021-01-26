@@ -8,4 +8,7 @@
 
     <string name="menu_item_search">Поиск</string>
     <string name="menu_item_clear">Очистить</string>
+
+    <string name="loading_error_text">Что-то пошло не так</string>
+    <string name="loading_error_retry_text">Попробовать снова</string>
 </resources>

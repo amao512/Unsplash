@@ -1,13 +1,14 @@
-package com.aslnstbk.unsplash.search.presentation.view
+package com.aslnstbk.unsplash.search.presentation.view.query
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aslnstbk.unsplash.R
-import com.aslnstbk.unsplash.search.data.models.SearchHistory
+import com.aslnstbk.unsplash.search.data.models.QueryHistory
+import com.aslnstbk.unsplash.search.presentation.view.SearchListener
 
-class SearchHistoryViewHolder(
+class QueryHistoryViewHolder(
     itemView: View,
     private val searchListener: SearchListener
 ) : RecyclerView.ViewHolder(itemView) {
@@ -15,16 +16,16 @@ class SearchHistoryViewHolder(
     private val queryTextView: TextView = itemView.findViewById(R.id.search_history_item_text_view_query)
     private val deleteImageView: ImageView = itemView.findViewById(R.id.search_history_item_delete)
 
-    fun onBind(searchHistory: SearchHistory) {
-        queryTextView.text = searchHistory.query
+    fun onBind(queryHistory: QueryHistory) {
+        queryTextView.text = queryHistory.query
 
         queryTextView.setOnClickListener {
-            searchListener.onSearchHistoryClick(query = queryTextView.text.toString())
+            searchListener.onQueryHistoryClick(query = queryTextView.text.toString())
         }
 
         deleteImageView.setOnClickListener {
-            searchListener.onSearchHistoryDelete(
-                searchHistory = searchHistory,
+            searchListener.onQueryHistoryDelete(
+                queryHistory = queryHistory,
                 position = layoutPosition
             )
         }

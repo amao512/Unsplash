@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Something went wrong"
+        android:text="@string/loading_error_text"
         android:textSize="@dimen/text_size_20x"
         />
 
@@ -25,7 +25,7 @@
         android:id="@+id/layout_loading_error_retry_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retry"
+        android:text="@string/loading_error_retry_text"
         android:textSize="@dimen/text_size_18x"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
