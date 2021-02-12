@@ -8,24 +8,32 @@ import com.aslnstbk.unsplash.favorite_images.domain.FavoriteImageRepository
 import com.aslnstbk.unsplash.common.presentation.models.ImageItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class FavoriteImagesViewModel(
+    private val mainJob: Job = Job(),
+    override val coroutineContext: CoroutineContext = mainJob + Dispatchers.Main,
+    private val ioContext: CoroutineContext = mainJob + Dispatchers.IO,
     private val favoriteImageRepository: FavoriteImageRepository
-) : ViewModel() {
+) : ViewModel(), CoroutineScope {
 
     val favoriteImagesLiveData: MutableLiveData<List<ImageItem>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
-    fun onStart() {
+    override fun onCleared() {
+        super.onCleared()
+        mainJob.cancel()
+    }
+
+    fun onStart() = launch(coroutineContext) {
         progressLiveData.value = ProgressState.Loading
         getAllFavoriteImages()
     }
 
-    private fun getAllFavoriteImages() = CoroutineScope(Dispatchers.IO).launch {
-        favoriteImagesLiveData.postValue(
-            prepareImagesList(favoriteImageRepository.getAllFavoriteImages().reversed())
-        )
+    private fun getAllFavoriteImages() = launch(ioContext) {
+        favoriteImagesLiveData.postValue(prepareImagesList(favoriteImageRepository.getAllFavoriteImages().reversed()))
         progressLiveData.postValue(ProgressState.Done)
     }
 

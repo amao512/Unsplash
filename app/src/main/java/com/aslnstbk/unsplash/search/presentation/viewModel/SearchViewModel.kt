@@ -12,11 +12,16 @@ import com.aslnstbk.unsplash.search.presentation.models.SearchImageItem
 import com.aslnstbk.unsplash.search.presentation.models.SearchItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class SearchViewModel(
+    private val mainJob: Job = Job(),
+    override val coroutineContext: CoroutineContext = mainJob + Dispatchers.Main,
+    private val ioContext: CoroutineContext = mainJob + Dispatchers.IO,
     private val searchRepository: SearchRepository
-) : ViewModel() {
+) : ViewModel(), CoroutineScope {
 
     val queryHistoryLiveData: MutableLiveData<List<QueryHistory>> = MutableLiveData()
     val imagesLiveData: MutableLiveData<ResponseData<List<SearchItem>, String>> = MutableLiveData()
@@ -24,6 +29,11 @@ class SearchViewModel(
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
     private var page = 1
+
+    override fun onCleared() {
+        super.onCleared()
+        mainJob.cancel()
+    }
 
     fun onStart() {
         getAllSearchHistory()
@@ -33,7 +43,7 @@ class SearchViewModel(
         searchRepository.deleteSearchHistory(queryHistory)
     }
 
-    fun onSearchImage(query: String) {
+    fun onSearchImage(query: String) = launch(coroutineContext) {
         progressLiveData.value = ProgressState.Loading
 
         searchRepository.searchImages(
@@ -52,7 +62,7 @@ class SearchViewModel(
         addSearchHistory(query = query)
     }
 
-    fun getMoreImages(query: String) {
+    fun getMoreImages(query: String) = launch(coroutineContext) {
         page++
 
         searchRepository.searchImages(
@@ -67,11 +77,11 @@ class SearchViewModel(
         )
     }
 
-    private fun getAllSearchHistory() = CoroutineScope(Dispatchers.IO).launch {
+    private fun getAllSearchHistory() = launch(ioContext) {
         queryHistoryLiveData.postValue(searchRepository.getAllSearchHistory().reversed())
     }
 
-    private fun addSearchHistory(query: String) = CoroutineScope(Dispatchers.IO).launch {
+    private fun addSearchHistory(query: String) = launch(ioContext) {
         if (!searchRepository.checkByQuery(query)) {
             searchRepository.addSearchHistory(
                 QueryHistory(query = query)

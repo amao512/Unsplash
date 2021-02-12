@@ -7,7 +7,7 @@ import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 interface ImageDetailsRepository {
 
     @WorkerThread
-    fun getImageById(
+    suspend fun getImageById(
         photoId: String,
         result: (Image) -> Unit,
         fail: (String?) -> Unit

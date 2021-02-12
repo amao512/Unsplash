@@ -7,15 +7,31 @@ import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.home.domain.HomeRepository
 import com.aslnstbk.unsplash.common.presentation.models.ImageItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class HomeViewModel(
+    private val mainJob: Job = Job(),
+    override val coroutineContext: CoroutineContext = mainJob + Dispatchers.Main,
     private val homeRepository: HomeRepository
-) : ViewModel(){
+) : ViewModel(), CoroutineScope {
 
     val imagesLiveData: MutableLiveData<ResponseData<List<ImageItem>, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
-    fun onStart(){
+    override fun onCleared() {
+        super.onCleared()
+        mainJob.cancel()
+    }
+
+    fun onStart() {
+        getImages()
+    }
+
+    private fun getImages() = launch(coroutineContext) {
         progressLiveData.value = ProgressState.Loading
 
         homeRepository.getImages(

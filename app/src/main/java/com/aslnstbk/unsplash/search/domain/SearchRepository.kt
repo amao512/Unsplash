@@ -1,8 +1,8 @@
 package com.aslnstbk.unsplash.search.domain
 
 import androidx.annotation.WorkerThread
-import com.aslnstbk.unsplash.search.data.models.SearchResult
 import com.aslnstbk.unsplash.search.data.models.QueryHistory
+import com.aslnstbk.unsplash.search.data.models.SearchResult
 
 interface SearchRepository {
 
@@ -19,7 +19,7 @@ interface SearchRepository {
     suspend fun deleteSearchHistory(queryHistory: QueryHistory)
 
     @WorkerThread
-    fun searchImages(
+    suspend fun searchImages(
         query: String,
         page: Int,
         result: (SearchResult) -> Unit,

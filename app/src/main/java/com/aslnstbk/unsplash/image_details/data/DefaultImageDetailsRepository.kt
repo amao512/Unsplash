@@ -6,9 +6,8 @@ import com.aslnstbk.unsplash.common.data.room.AppDatabase
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
 import com.aslnstbk.unsplash.utils.mappers.ImageApiDataMapper
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.awaitResponse
 
 class DefaultImageDetailsRepository(
     private val imageDetailsDataSource: ImageDetailsDataSource,
@@ -16,30 +15,24 @@ class DefaultImageDetailsRepository(
     private val imageApiDataMapper: ImageApiDataMapper
 ) : ImageDetailsRepository {
 
-    override fun getImageById(
+    override suspend fun getImageById(
         photoId: String,
         result: (Image) -> Unit,
         fail: (String?) -> Unit
     ) {
-        imageDetailsDataSource.getImageById(photoId = photoId)
-            .enqueue(object : Callback<ImageApiData> {
-                override fun onResponse(
-                    call: Call<ImageApiData>,
-                    response: Response<ImageApiData>
-                ) {
-                    if (response.isSuccessful){
-                        val image: Image = imageApiDataMapper.map(response.body())
+        try {
+            val response: Response<ImageApiData> = imageDetailsDataSource.getImageById(photoId = photoId).awaitResponse()
 
-                        result(image)
-                    } else {
-                        fail(response.message())
-                    }
-                }
+            if (response.isSuccessful){
+                val image: Image = imageApiDataMapper.map(response.body())
 
-                override fun onFailure(call: Call<ImageApiData>, t: Throwable) {
-                    fail(t.localizedMessage)
-                }
-            })
+                result(image)
+            } else {
+                fail(response.message())
+            }
+        } catch (e: Exception) {
+            fail(e.localizedMessage)
+        }
     }
 
     override suspend fun addFavoriteImage(favoriteImage: FavoriteImage) {

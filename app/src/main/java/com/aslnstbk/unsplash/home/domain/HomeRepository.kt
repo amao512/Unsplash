@@ -6,7 +6,7 @@ import com.aslnstbk.unsplash.common.data.models.Image
 interface HomeRepository {
 
     @WorkerThread
-    fun getImages(
+    suspend fun getImages(
         result: (List<Image>) -> Unit,
         fail: (String?) -> Unit
     )

@@ -10,22 +10,32 @@ import com.aslnstbk.unsplash.image_details.data.ImageDownload
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class ImageDetailsViewModel(
+    private val mainJob: Job = Job(),
+    override val coroutineContext: CoroutineContext = mainJob + Dispatchers.Main,
+    private val ioContext: CoroutineContext = mainJob + Dispatchers.IO,
     private val imageDetailsRepository: ImageDetailsRepository,
     private val imageDownload: ImageDownload
-) : ViewModel() {
+) : ViewModel(), CoroutineScope {
 
     val imageLiveData: MutableLiveData<ResponseData<Image, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
+
+    override fun onCleared() {
+        super.onCleared()
+        mainJob.cancel()
+    }
 
     fun onStart(imageId: String) {
         progressLiveData.value = ProgressState.Loading
         getFavoriteImages(imageId)
     }
 
-    fun onFavoriteButtonClick(image: Image) {
+    fun onFavoriteButtonClick(image: Image) = launch(coroutineContext) {
         if (image.isFavorite) {
             removeFavoriteImage(image = image)
         } else {
@@ -40,7 +50,7 @@ class ImageDetailsViewModel(
         )
     }
 
-    private fun getFavoriteImages(imageId: String) {
+    private fun getFavoriteImages(imageId: String) = launch(coroutineContext) {
         imageDetailsRepository.getImageById(
             photoId = imageId,
             result = {
@@ -56,7 +66,7 @@ class ImageDetailsViewModel(
         )
     }
 
-    private fun setFavoriteImage(image: Image) = CoroutineScope(Dispatchers.IO).launch {
+    private fun setFavoriteImage(image: Image) = launch(ioContext) {
         val isFavorite: Boolean = imageDetailsRepository.checkById(imageId = image.id)
 
         if (isFavorite) {
@@ -64,17 +74,18 @@ class ImageDetailsViewModel(
         }
     }
 
-    private fun addFavoriteImage(image: Image) = CoroutineScope(Dispatchers.IO).launch {
+    private fun addFavoriteImage(image: Image) = launch(ioContext) {
         imageDetailsRepository.addFavoriteImage(
             FavoriteImage(
                 imageId = image.id,
                 imageUrl = image.urls.regular
             )
         )
+
         getFavoriteImages(image.id)
     }
 
-    private fun removeFavoriteImage(image: Image) = CoroutineScope(Dispatchers.IO).launch {
+    private fun removeFavoriteImage(image: Image) = launch(ioContext) {
         imageDetailsRepository.removeFavoriteImage(imageId = image.id)
         getFavoriteImages(image.id)
     }
