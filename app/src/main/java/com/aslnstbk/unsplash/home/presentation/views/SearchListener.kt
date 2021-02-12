@@ -1,4 +1,4 @@
-package com.aslnstbk.unsplash.home.presentation
+package com.aslnstbk.unsplash.home.presentation.views
 
 interface SearchListener {
 

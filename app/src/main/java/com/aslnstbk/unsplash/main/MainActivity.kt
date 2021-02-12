@@ -1,13 +1,13 @@
 package com.aslnstbk.unsplash.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.presentation.view.LoadingError
-import com.aslnstbk.unsplash.favorite_images.presentation.FavoriteImagesFragment
-import com.aslnstbk.unsplash.home.presentation.HomeFragment
-import com.aslnstbk.unsplash.navigation.Navigation
+import com.aslnstbk.unsplash.navigation.Screens
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.android.ext.android.inject
 
@@ -15,9 +15,11 @@ lateinit var APP_ACTIVITY: MainActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private val navigation: Navigation by inject()
-    private val mainRouter: MainRouter by inject()
+    private val navigatorHolder: NavigatorHolder by inject()
+    private val router: Router by inject()
     private val loadingError: LoadingError by inject()
+
+    private val navigator: AppNavigator = AppNavigator(this, R.id.activity_main_fragment_container)
 
     private lateinit var favoriteFab: FloatingActionButton
 
@@ -26,25 +28,31 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         APP_ACTIVITY = this
-        navigation.init(activity = this)
-        loadingError.init(activity = this)
-
-        replaceFragment(HomeFragment())
 
         initViews()
+        setStartFragment()
+    }
+
+    override fun onResumeFragments() {
+        super.onStart()
+        navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        navigatorHolder.removeNavigator()
     }
 
     private fun initViews() {
+        loadingError.init()
+
         favoriteFab = findViewById(R.id.activity_main_fab_favorite)
         favoriteFab.setOnClickListener {
-            navigation.navigate(mainRouter.setScreen(
-                fragment = FavoriteImagesFragment(),
-                isBackStack = true
-            ))
+            router.navigateTo(Screens.FavoriteImages())
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) = navigation.navigate(
-        mainRouter.setScreen(fragment)
-    )
+    private fun setStartFragment() {
+        router.replaceScreen(Screens.Home())
+    }
 }

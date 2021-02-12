@@ -2,7 +2,10 @@ package com.aslnstbk.unsplash.image_details.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,25 +19,22 @@ import com.aslnstbk.unsplash.common.presentation.view.LoadingError
 import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
-import com.aslnstbk.unsplash.main.MainRouter
-import com.aslnstbk.unsplash.navigation.Navigation
-import com.aslnstbk.unsplash.search.presentation.SearchFragment
+import com.aslnstbk.unsplash.navigation.IMAGE_ID_BUNDLE_KEY
+import com.aslnstbk.unsplash.navigation.Screens
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
+import com.aslnstbk.unsplash.utils.mappers.EMPTY_STRING
+import com.github.terrakok.cicerone.Router
 import org.apmem.tools.layouts.FlowLayout
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-const val IMAGE_ID_BUNDLE_KEY = "image_id_key"
 const val EMAIL_TEXT_FORMAT = "@%s"
-const val DEFAULT_IMAGE_ID = "RlTHiLHE7Pg"
-const val TAG_BUNDLE_KEY = "tag_bundle"
 
 class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
 
     private val imageDetailsViewModel: ImageDetailsViewModel by viewModel()
-    private val navigation: Navigation by inject()
-    private val mainRouter: MainRouter by inject()
+    private val router: Router by inject()
     private val imageLoader: ImageLoader by inject()
     private val imageViewer: ImageViewer by inject()
     private val loadingError: LoadingError by inject()
@@ -65,9 +65,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     }
 
     private fun getImageIdFromBundle(): String {
-        val bundle: Bundle? = arguments
-
-        return bundle?.getString(IMAGE_ID_BUNDLE_KEY, DEFAULT_IMAGE_ID) ?: DEFAULT_IMAGE_ID
+        return arguments?.getString(IMAGE_ID_BUNDLE_KEY, EMPTY_STRING) ?: EMPTY_STRING
     }
 
     private fun initViews(view: View) {
@@ -92,7 +90,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
             .build(activity = APP_ACTIVITY)
 
         toolbar.setNavigationOnClickListener {
-            navigation.back()
+            router.exit()
         }
     }
 
@@ -172,17 +170,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     }
 
     private fun searchByTag(title: String) {
-        val searchFragment = SearchFragment()
-        val args = Bundle()
-        args.putString(TAG_BUNDLE_KEY, title)
-        searchFragment.arguments = args
-
-        navigation.navigate(
-            mainRouter.setScreen(
-                fragment = searchFragment,
-                isBackStack = true
-            )
-        )
+        router.navigateTo(Screens.Search(query = title))
     }
 
     private fun createTagTextView(tag: String): TextView {

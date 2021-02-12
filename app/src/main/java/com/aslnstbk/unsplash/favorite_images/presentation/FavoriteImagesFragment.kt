@@ -11,18 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.domain.ImageLoader
+import com.aslnstbk.unsplash.common.presentation.models.ImageItem
+import com.aslnstbk.unsplash.common.presentation.view.ImagesLineAdapter
 import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.favorite_images.presentation.viewModel.FavoriteImagesViewModel
 import com.aslnstbk.unsplash.home.data.ImageClickListener
-import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
-import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
-import com.aslnstbk.unsplash.common.presentation.models.ImageItem
-import com.aslnstbk.unsplash.common.presentation.view.ImagesLineAdapter
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
-import com.aslnstbk.unsplash.main.MainRouter
-import com.aslnstbk.unsplash.navigation.Navigation
+import com.aslnstbk.unsplash.navigation.Screens
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
+import com.github.terrakok.cicerone.Router
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,9 +28,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), ImageClickListener {
 
     private val favoriteImagesViewModel: FavoriteImagesViewModel by viewModel()
+    private val router: Router by inject()
     private val imageLoader: ImageLoader by inject()
-    private val navigation: Navigation by inject()
-    private val mainRouter: MainRouter by inject()
 
     private val imagesLineAdapter: ImagesLineAdapter by lazy {
         ImagesLineAdapter(
@@ -63,17 +60,7 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
     }
 
     override fun onImageClick(imageId: String) {
-        val imageDetailsFragment = ImageDetailsFragment()
-        val args = Bundle()
-        args.putString(IMAGE_ID_BUNDLE_KEY, imageId)
-        imageDetailsFragment.arguments = args
-
-        navigation.navigate(
-            mainRouter.setScreen(
-                fragment = imageDetailsFragment,
-                isBackStack = true
-            )
-        )
+        router.navigateTo(Screens.ImageDetails(imageId = imageId))
     }
 
     private fun initViews(view: View) {
@@ -91,7 +78,7 @@ class FavoriteImagesFragment : Fragment(R.layout.fragment_favorite_images), Imag
             .build(activity = APP_ACTIVITY)
 
         toolbar.setNavigationOnClickListener {
-            navigation.back()
+            router.exit()
         }
     }
 

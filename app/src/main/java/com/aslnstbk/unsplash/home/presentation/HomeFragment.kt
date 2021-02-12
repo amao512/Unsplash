@@ -17,27 +17,22 @@ import com.aslnstbk.unsplash.common.presentation.view.LoadingError
 import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
-import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
-import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
-import com.aslnstbk.unsplash.main.MainRouter
-import com.aslnstbk.unsplash.navigation.Navigation
-import com.aslnstbk.unsplash.search.presentation.SearchFragment
+import com.aslnstbk.unsplash.navigation.Screens
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
+import com.github.terrakok.cicerone.Router
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
 
     private val homeViewModel: HomeViewModel by viewModel()
+    private val router: Router by inject()
     private val imageLoader: ImageLoader by inject()
-    private val navigation: Navigation by inject()
-    private val mainRouter: MainRouter by inject()
     private val loadingError: LoadingError by inject()
 
     private lateinit var toolbar: Toolbar
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
 
@@ -63,17 +58,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
     }
 
     override fun onImageClick(imageId: String) {
-        val imageDetailsFragment = ImageDetailsFragment()
-        val args = Bundle()
-        args.putString(IMAGE_ID_BUNDLE_KEY, imageId)
-        imageDetailsFragment.arguments = args
-
-        navigation.navigate(
-            mainRouter.setScreen(
-                fragment = imageDetailsFragment,
-                isBackStack = true
-            )
-        )
+        router.navigateTo(Screens.ImageDetails(imageId = imageId))
     }
 
     private fun initViews(view: View) {
@@ -89,12 +74,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
             .build(activity = APP_ACTIVITY)
 
         toolbar.setOnMenuItemClickListener {
-            navigation.navigate(
-                mainRouter.setScreen(
-                    fragment = SearchFragment(),
-                    isBackStack = true
-                )
-            )
+            router.navigateTo(Screens.Search())
 
             true
         }

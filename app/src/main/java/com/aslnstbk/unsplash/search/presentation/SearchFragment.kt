@@ -16,12 +16,9 @@ import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.presentation.view.LoadingError
 import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.home.data.ImageClickListener
-import com.aslnstbk.unsplash.image_details.presentation.IMAGE_ID_BUNDLE_KEY
-import com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment
-import com.aslnstbk.unsplash.image_details.presentation.TAG_BUNDLE_KEY
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
-import com.aslnstbk.unsplash.main.MainRouter
-import com.aslnstbk.unsplash.navigation.Navigation
+import com.aslnstbk.unsplash.navigation.QUERY_BUNDLE_KEY
+import com.aslnstbk.unsplash.navigation.Screens
 import com.aslnstbk.unsplash.search.data.models.QueryHistory
 import com.aslnstbk.unsplash.search.presentation.models.SearchItem
 import com.aslnstbk.unsplash.search.presentation.view.SearchListener
@@ -31,14 +28,14 @@ import com.aslnstbk.unsplash.search.presentation.viewModel.SearchViewModel
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
 import com.aslnstbk.unsplash.utils.mappers.EMPTY_STRING
+import com.github.terrakok.cicerone.Router
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, ImageClickListener {
 
     private val searchViewModel: SearchViewModel by viewModel()
-    private val mainRouter: MainRouter by inject()
-    private val navigation: Navigation by inject()
+    private val router: Router by inject()
     private val imageLoader: ImageLoader by inject()
     private val loadingError: LoadingError by inject()
 
@@ -100,21 +97,11 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     }
 
     override fun onImageClick(imageId: String) {
-        val imageDetailsFragment = ImageDetailsFragment()
-        val args = Bundle()
-        args.putString(IMAGE_ID_BUNDLE_KEY, imageId)
-        imageDetailsFragment.arguments = args
-
-        navigation.navigate(
-            mainRouter.setScreen(
-                fragment = imageDetailsFragment,
-                isBackStack = true
-            )
-        )
+        router.navigateTo(Screens.ImageDetails(imageId = imageId))
     }
 
     private fun getTagFromBundle() {
-        val tag: String = arguments?.getString(TAG_BUNDLE_KEY) ?: EMPTY_STRING
+        val tag: String = arguments?.getString(QUERY_BUNDLE_KEY) ?: EMPTY_STRING
 
         if (tag.isNotBlank()) {
             onSearch(query = tag)
@@ -176,7 +163,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         }
 
         toolbar.setNavigationOnClickListener {
-            navigation.back()
+            router.exit()
             toolbarEditText.hide()
         }
     }
