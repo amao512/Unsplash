@@ -37,7 +37,6 @@
                 android:textSize="@dimen/text_size_20x"
                 android:visibility="gone"
                 />
-
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
@@ -53,7 +52,6 @@
             android:layout_height="match_parent"
             android:visibility="gone"
             />
-
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

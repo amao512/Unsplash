@@ -11,7 +11,6 @@ import com.aslnstbk.unsplash.search.presentation.models.SEARCH_IMAGE_ITEM_TYPE
 import com.aslnstbk.unsplash.search.presentation.models.SearchItem
 import com.aslnstbk.unsplash.search.presentation.view.BaseViewHolder
 import com.aslnstbk.unsplash.search.presentation.view.SearchListener
-import java.lang.Error
 
 class SearchImagesAdapter(
     private val imageLoader: ImageLoader,

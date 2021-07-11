@@ -111,8 +111,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
 
     private fun initViews(view: View) {
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
+
         toolbarEditText = APP_ACTIVITY.findViewById(R.id.activity_main_toolbar_edit_text)
         toolbarEditText.show()
+
         recyclerView = view.findViewById(R.id.fragment_search_recycler_view)
         recyclerView.adapter = searchImagesAdapter
     }

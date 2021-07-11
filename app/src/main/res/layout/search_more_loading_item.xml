@@ -43,6 +43,6 @@
             android:textSize="@dimen/text_size_18x"
             android:textStyle="bold"
             />
-
     </LinearLayout>
+
 </LinearLayout>

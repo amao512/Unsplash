@@ -26,5 +26,4 @@
         android:textStyle="bold"
         android:visibility="gone"
         />
-
 </FrameLayout>
