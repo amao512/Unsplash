@@ -2,7 +2,6 @@ package com.aslnstbk.unsplash.common.data.retrofit
 
 import android.content.Context
 import com.aslnstbk.unsplash.BuildConfig
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -14,7 +13,6 @@ object RetrofitClient {
     private const val BASE_URL = BuildConfig.BASE_URL
 
     private fun httpClient(context: Context) = OkHttpClient.Builder()
-        .addInterceptor(ChuckerInterceptor.Builder(context).build())
         .addInterceptor {chain ->
         val original: Request = chain.request()
         val originalHttpUrl: HttpUrl = original.url()
