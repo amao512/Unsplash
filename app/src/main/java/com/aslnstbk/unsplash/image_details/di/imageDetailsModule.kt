@@ -1,6 +1,5 @@
 package com.aslnstbk.unsplash.image_details.di
 
-import com.aslnstbk.unsplash.common.data.retrofit.RetrofitClient
 import com.aslnstbk.unsplash.image_details.data.DefaultImageDetailsRepository
 import com.aslnstbk.unsplash.image_details.data.ImageDetailsDataSource
 import com.aslnstbk.unsplash.image_details.data.ImageDownload
@@ -20,7 +19,7 @@ val imageDetailsModule = module {
     }
 
     single {
-        val retrofit: Retrofit = RetrofitClient.instance
+        val retrofit: Retrofit = get()
 
         retrofit.create(ImageDetailsDataSource::class.java)
     }

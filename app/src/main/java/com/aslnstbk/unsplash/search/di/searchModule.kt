@@ -1,6 +1,5 @@
 package com.aslnstbk.unsplash.search.di
 
-import com.aslnstbk.unsplash.common.data.retrofit.RetrofitClient
 import com.aslnstbk.unsplash.search.data.DefaultSearchRepository
 import com.aslnstbk.unsplash.search.data.SearchApiClient
 import com.aslnstbk.unsplash.search.domain.SearchRepository
@@ -17,7 +16,7 @@ val searchModule = module {
     }
 
     single {
-        val retrofit: Retrofit = RetrofitClient.instance
+        val retrofit: Retrofit = get()
 
         retrofit.create(SearchApiClient::class.java)
     }

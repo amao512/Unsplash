@@ -30,7 +30,7 @@ class ImageApiDataMapper(
                 alt_description = it.alt_description ?: EMPTY_STRING,
                 urls = imageUrlsApiDataMapper.map(it.urls),
                 links = imageLinksApiDataMapper.map(it.links),
-                categories = it.categories,
+                categories = it.categories ?: Any(),
                 likes = it.likes ?: DEFAULT_INT,
                 user = imageUserApiDataMapper.map(it.user),
                 tags = imageTagApiDataMapper.map(it.tags)

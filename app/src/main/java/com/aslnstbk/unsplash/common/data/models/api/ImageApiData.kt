@@ -30,7 +30,7 @@ data class ImageApiData(
     @JsonProperty("links")
     val links: ImageLinksApiData?,
     @JsonProperty("categories")
-    val categories: Any,
+    val categories: Any?,
     @JsonProperty("likes")
     val likes: Int?,
     @JsonProperty("user")

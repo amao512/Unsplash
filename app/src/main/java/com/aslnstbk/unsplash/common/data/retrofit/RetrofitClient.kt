@@ -1,6 +1,8 @@
 package com.aslnstbk.unsplash.common.data.retrofit
 
+import android.content.Context
 import com.aslnstbk.unsplash.BuildConfig
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -11,7 +13,9 @@ object RetrofitClient {
     private const val ACCESS_KEY = BuildConfig.ACCESS_KEY
     private const val BASE_URL = BuildConfig.BASE_URL
 
-    private val httpClient = OkHttpClient.Builder().addInterceptor {chain ->
+    private fun httpClient(context: Context) = OkHttpClient.Builder()
+        .addInterceptor(ChuckerInterceptor.Builder(context).build())
+        .addInterceptor {chain ->
         val original: Request = chain.request()
         val originalHttpUrl: HttpUrl = original.url()
 
@@ -24,10 +28,10 @@ object RetrofitClient {
         chain.proceed(request)
     }
 
-    val instance: Retrofit by lazy {
-        Retrofit.Builder()
+    fun instance(context: Context): Retrofit {
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(httpClient.build())
+            .client(httpClient(context).build())
             .addConverterFactory(JacksonConverterFactory.create())
             .build()
     }

@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.aslnstbk.unsplash"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -98,5 +98,8 @@ dependencies {
 
     // for Staggered layout flow tags
     implementation 'org.apmem.tools:layouts:1.10@aar'
+
+    // chucker
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
 
 }

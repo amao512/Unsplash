@@ -14,5 +14,7 @@ data class ImageUrlsApiData(
     @JsonProperty("small")
     val small: String?,
     @JsonProperty("thumb")
-    val thumb: String?
+    val thumb: String?,
+    @JsonProperty("small_s3")
+    val smallS3: String?
 )
