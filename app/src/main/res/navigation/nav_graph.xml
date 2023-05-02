@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.aslnstbk.unsplash.home.presentation.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_favoriteImagesFragment"
+            app:destination="@id/favoriteImagesFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_imageDetailsFragment"
+            app:destination="@id/imageDetailsFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoriteImagesFragment"
+        android:name="com.aslnstbk.unsplash.favorite_images.presentation.FavoriteImagesFragment"
+        android:label="FavoriteImagesFragment" >
+        <action
+            android:id="@+id/action_favoriteImagesFragment_to_imageDetailsFragment"
+            app:destination="@id/imageDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/imageDetailsFragment"
+        android:name="com.aslnstbk.unsplash.image_details.presentation.ImageDetailsFragment"
+        android:label="fragment_image_details"
+        tools:layout="@layout/fragment_image_details" >
+        <action
+            android:id="@+id/action_imageDetailsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_imageDetailsFragment_to_favoriteImagesFragment"
+            app:destination="@id/favoriteImagesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.aslnstbk.unsplash.search.presentation.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_imageDetailsFragment"
+            app:destination="@id/imageDetailsFragment" />
+    </fragment>
+</navigation>

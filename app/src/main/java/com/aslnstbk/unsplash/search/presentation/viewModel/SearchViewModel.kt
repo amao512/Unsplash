@@ -1,7 +1,9 @@
 package com.aslnstbk.unsplash.search.presentation.viewModel
 
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.aslnstbk.unsplash.common.constants.ArgConstants.ARG_QUERY
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
@@ -28,6 +30,7 @@ class SearchViewModel(
     val moreImagesLiveData: MutableLiveData<ResponseData<List<SearchItem>, String>> = MutableLiveData()
     val progressLiveData: MutableLiveData<ProgressState> = MutableLiveData()
 
+    val query = MutableLiveData<String>()
     private var page = 1
 
     override fun onCleared() {
@@ -35,8 +38,15 @@ class SearchViewModel(
         mainJob.cancel()
     }
 
-    fun onStart() {
-        getAllSearchHistory()
+    fun onViewCreated(args: Bundle?) {
+        args?.let {
+            if (it.containsKey(ARG_QUERY)) {
+                query.value = it.getString(ARG_QUERY)
+                onSearchImage(query.value.orEmpty())
+            } else {
+                getAllSearchHistory()
+            }
+        }
     }
 
     fun deleteSearchHistory(queryHistory: QueryHistory) = CoroutineScope(Dispatchers.IO).launch {
@@ -44,6 +54,7 @@ class SearchViewModel(
     }
 
     fun onSearchImage(query: String) = launch(coroutineContext) {
+        this@SearchViewModel.query.value = query
         progressLiveData.value = ProgressState.Loading
 
         searchRepository.searchImages(
@@ -62,11 +73,11 @@ class SearchViewModel(
         addSearchHistory(query = query)
     }
 
-    fun getMoreImages(query: String) = launch(coroutineContext) {
+    fun fetchMoreImages() = launch(coroutineContext) {
         page++
 
         searchRepository.searchImages(
-            query = query,
+            query = query.value.orEmpty(),
             page = page,
             result = {
                 moreImagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))

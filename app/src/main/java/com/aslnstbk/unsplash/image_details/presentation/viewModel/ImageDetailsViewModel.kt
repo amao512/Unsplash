@@ -1,13 +1,16 @@
 package com.aslnstbk.unsplash.image_details.presentation.viewModel
 
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.aslnstbk.unsplash.common.constants.ArgConstants.ARG_IMAGE_ID
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
 import com.aslnstbk.unsplash.image_details.data.ImageDownload
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
+import com.aslnstbk.unsplash.utils.mappers.EMPTY_STRING
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,9 +33,14 @@ class ImageDetailsViewModel(
         mainJob.cancel()
     }
 
-    fun onStart(imageId: String) {
-        progressLiveData.value = ProgressState.Loading
-        getFavoriteImages(imageId)
+    fun onViewCreated(args: Bundle?) {
+        args?.let {
+            if (it.containsKey(ARG_IMAGE_ID)) {
+                val imageId = it.getString(ARG_IMAGE_ID, EMPTY_STRING)
+                progressLiveData.value = ProgressState.Loading
+                getFavoriteImages(imageId)
+            }
+        }
     }
 
     fun onFavoriteButtonClick(image: Image) = launch(coroutineContext) {

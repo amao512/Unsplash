@@ -4,28 +4,22 @@ import android.os.Bundle
 import android.view.View
 import android.viewbinding.library.fragment.viewBinding
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.aslnstbk.unsplash.R
+import com.aslnstbk.unsplash.common.constants.ArgConstants.ARG_QUERY
 import com.aslnstbk.unsplash.common.data.ImageViewer
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.common.domain.ImageLoader
-import com.aslnstbk.unsplash.common.presentation.view.LoadingError
-import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
 import com.aslnstbk.unsplash.databinding.FragmentImageDetailsBinding
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
-import com.aslnstbk.unsplash.main.APP_ACTIVITY
-import com.aslnstbk.unsplash.navigation.IMAGE_ID_BUNDLE_KEY
-import com.aslnstbk.unsplash.navigation.Screens
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
-import com.aslnstbk.unsplash.utils.mappers.EMPTY_STRING
-import com.github.terrakok.cicerone.Router
 import org.apmem.tools.layouts.FlowLayout
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,56 +30,32 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
 
     private val binding: FragmentImageDetailsBinding by viewBinding()
 
-    private val imageDetailsViewModel: ImageDetailsViewModel by viewModel()
-    private val router: Router by inject()
+    private val viewModel: ImageDetailsViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
     private val imageViewer: ImageViewer by inject()
-    private val loadingError: LoadingError by inject()
-
-    private lateinit var toolbar: Toolbar
-    private lateinit var progressBar: ProgressBar
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        imageDetailsViewModel.onStart(getImageIdFromBundle())
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViews()
-        buildToolbar()
-        observeLiveData()
-        view.hide()
+        setupViews()
+        observeViewModel()
+        viewModel.onViewCreated(arguments)
     }
 
-    private fun getImageIdFromBundle(): String {
-        return arguments?.getString(IMAGE_ID_BUNDLE_KEY, EMPTY_STRING) ?: EMPTY_STRING
-    }
-
-    private fun initViews() {
-        progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
-    }
-
-    private fun buildToolbar() {
-        toolbar = ToolbarBuilder()
-            .setNavigationIcon(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_arrow_back
-                )
-            )
-            .build(activity = APP_ACTIVITY)
-
+    private fun setupViews() = with(binding) {
+        toolbar.navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_back)
         toolbar.setNavigationOnClickListener {
-            router.exit()
+            findNavController().navigateUp()
+        }
+
+        favouritesButton.setOnClickListener {
+            findNavController().navigate(R.id.action_imageDetailsFragment_to_favoriteImagesFragment)
         }
     }
 
-    private fun observeLiveData() {
-        imageDetailsViewModel.imageLiveData.observe(viewLifecycleOwner, ::handleImage)
-        imageDetailsViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
+    private fun observeViewModel() {
+        viewModel.imageLiveData.observe(viewLifecycleOwner, ::handleImage)
+        viewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
     }
 
     private fun handleImage(responseData: ResponseData<Image, String>) {
@@ -105,8 +75,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         onDownloadButtonClick(image = image)
         fillTags(image = image)
 
-        loadingError.hide()
-        view?.show()
+        errorLayout.root.hide()
     }
 
     private fun loadImages(image: Image) = with(binding) {
@@ -129,21 +98,25 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         }
     }
 
-    private fun setFavoriteImage(isFavorite: Boolean) = if (isFavorite) {
-        binding.fragmentImageDetailsButtonFavorite.setBackgroundResource(R.drawable.ic_favorite_bold_red)
-    } else {
-        binding.fragmentImageDetailsButtonFavorite.setBackgroundResource(R.drawable.ic_favorite_border)
+    private fun setFavoriteImage(isFavorite: Boolean) = with(binding) {
+        val resource = if (isFavorite) {
+            R.drawable.ic_favorite_bold_red
+        } else {
+            R.drawable.ic_favorite_border
+        }
+
+        fragmentImageDetailsButtonFavorite.setBackgroundResource(resource)
     }
 
     private fun onFavoriteButtonClick(image: Image) {
         binding.fragmentImageDetailsButtonFavorite.setOnClickListener {
-            imageDetailsViewModel.onFavoriteButtonClick(image = image)
+            viewModel.onFavoriteButtonClick(image = image)
         }
     }
 
     private fun onDownloadButtonClick(image: Image) {
         binding.fragmentImageDetailsButtonDownload.setOnClickListener {
-            imageDetailsViewModel.onDownloadImage(image = image)
+            viewModel.onDownloadImage(image = image)
         }
     }
 
@@ -161,31 +134,34 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     }
 
     private fun searchByTag(title: String) {
-        router.navigateTo(Screens.Search(query = title))
+        findNavController().navigate(R.id.action_imageDetailsFragment_to_searchFragment, bundleOf(
+            ARG_QUERY to title
+        ))
     }
 
     private fun createTagTextView(tag: String): TextView {
-        val tagTextView = TextView(requireContext())
         val params = FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         params.setMargins(0, 0, 10, 10)
-
-        tagTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTagText))
-        tagTextView.setBackgroundResource(R.drawable.bg_tag)
-        tagTextView.layoutParams = params
-        tagTextView.textSize = 18f
-        tagTextView.text = tag
+        val tagTextView = TextView(requireContext()).apply {
+            setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTagText))
+            setBackgroundResource(R.drawable.bg_tag)
+            layoutParams = params
+            textSize = 18f
+            text = tag
+        }
 
         return tagTextView
     }
 
-    private fun showLoadingError() {
-        loadingError.show()
-        loadingError.onRetryClick {
-            imageDetailsViewModel.onStart(getImageIdFromBundle())
+    private fun showLoadingError() = with(binding) {
+        errorLayout.root.show()
+        errorLayout.layoutLoadingErrorRetryButton.setOnClickListener {
+            errorLayout.root.hide()
+            viewModel.onViewCreated(arguments)
         }
     }
 
-    private fun handleProgress(progressState: ProgressState) {
+    private fun handleProgress(progressState: ProgressState) = with(binding) {
         when (progressState) {
             is ProgressState.Loading -> progressBar.show()
             is ProgressState.Done -> progressBar.hide()

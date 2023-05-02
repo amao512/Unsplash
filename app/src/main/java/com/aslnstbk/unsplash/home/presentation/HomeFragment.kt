@@ -2,39 +2,31 @@ package com.aslnstbk.unsplash.home.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
+import android.viewbinding.library.fragment.viewBinding
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.findNavController
 import com.aslnstbk.unsplash.R
+import com.aslnstbk.unsplash.common.constants.ArgConstants.ARG_IMAGE_ID
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.presentation.models.ImageItem
 import com.aslnstbk.unsplash.common.presentation.view.ImagesLineAdapter
-import com.aslnstbk.unsplash.common.presentation.view.LoadingError
-import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
+import com.aslnstbk.unsplash.databinding.FragmentHomeBinding
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.home.presentation.viewmodel.HomeViewModel
-import com.aslnstbk.unsplash.main.APP_ACTIVITY
-import com.aslnstbk.unsplash.navigation.Screens
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
-import com.github.terrakok.cicerone.Router
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
 
-    private val homeViewModel: HomeViewModel by viewModel()
-    private val router: Router by inject()
-    private val imageLoader: ImageLoader by inject()
-    private val loadingError: LoadingError by inject()
+    private val binding: FragmentHomeBinding by viewBinding()
 
-    private lateinit var toolbar: Toolbar
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
+    private val viewModel: HomeViewModel by viewModel()
+    private val imageLoader: ImageLoader by inject()
 
     private val imagesLineAdapter: ImagesLineAdapter by lazy {
         ImagesLineAdapter(
@@ -43,46 +35,40 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        homeViewModel.onStart()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViews(view)
-        buildToolbar()
-        observeLiveData()
+        setupViews()
+        setupListeners()
+        observeViewModel()
+        viewModel.onViewCreated()
     }
 
     override fun onImageClick(imageId: String) {
-        router.navigateTo(Screens.ImageDetails(imageId = imageId))
+        findNavController().navigate(R.id.action_homeFragment_to_imageDetailsFragment, bundleOf(
+            ARG_IMAGE_ID to imageId
+        ))
     }
 
-    private fun initViews(view: View) {
-        progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
-        recyclerView = view.findViewById(R.id.fragment_home_recycler_view)
-        recyclerView.adapter = imagesLineAdapter
+    private fun setupViews() = with(binding) {
+        homeRecyclerView.adapter = imagesLineAdapter
     }
 
-    private fun buildToolbar() {
-        toolbar = ToolbarBuilder()
-            .setNavigationIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_app_logo))
-            .setMenu(R.menu.home_toolbar_menu)
-            .build(activity = APP_ACTIVITY)
-
+    private fun setupListeners() = with(binding) {
         toolbar.setOnMenuItemClickListener {
-            router.navigateTo(Screens.Search())
+            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
 
             true
         }
+
+        favouritesButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_favoriteImagesFragment)
+        }
     }
 
-    private fun observeLiveData() {
-        homeViewModel.imagesLiveData.observe(viewLifecycleOwner, ::handleImages)
-        homeViewModel.progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
+    private fun observeViewModel() = with(viewModel) {
+        imagesLiveData.observe(viewLifecycleOwner, ::handleImages)
+        progressLiveData.observe(viewLifecycleOwner, ::handleProgress)
     }
 
     private fun handleImages(responseData: ResponseData<List<ImageItem>, String>) {
@@ -92,19 +78,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), ImageClickListener {
         }
     }
 
-    private fun showImages(list: List<ImageItem>) {
+    private fun showImages(list: List<ImageItem>) = with(binding) {
         imagesLineAdapter.setList(list)
-        loadingError.hide()
+        errorLayout.root.hide()
+        homeRecyclerView.show()
     }
 
-    private fun showLoadingError() {
-        loadingError.show()
-        loadingError.onRetryClick {
-            homeViewModel.onStart()
+    private fun showLoadingError() = with(binding) {
+        homeRecyclerView.hide()
+        errorLayout.root.show()
+        errorLayout.layoutLoadingErrorRetryButton.setOnClickListener {
+            errorLayout.root.hide()
+            viewModel.onViewCreated()
         }
     }
 
-    private fun handleProgress(progressState: ProgressState) {
+    private fun handleProgress(progressState: ProgressState) = with(binding) {
         when (progressState) {
             ProgressState.Loading -> progressBar.show()
             ProgressState.Done -> progressBar.hide()

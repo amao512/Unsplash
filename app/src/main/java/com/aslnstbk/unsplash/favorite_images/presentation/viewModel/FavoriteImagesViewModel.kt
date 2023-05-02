@@ -27,7 +27,7 @@ class FavoriteImagesViewModel(
         mainJob.cancel()
     }
 
-    fun onStart() = launch(coroutineContext) {
+    fun onViewCreated() = launch(coroutineContext) {
         progressLiveData.value = ProgressState.Loading
         getAllFavoriteImages()
     }

@@ -71,9 +71,6 @@ dependencies {
     androidTestImplementation Dependencies.junitExt
     androidTestImplementation Dependencies.espressoCore
 
-    //Cicerone
-    implementation Dependencies.cicerone
-
     // Retrofit
     implementation Dependencies.retrofit
     implementation Dependencies.converterJackson

@@ -27,11 +27,11 @@ class HomeViewModel(
         mainJob.cancel()
     }
 
-    fun onStart() {
-        getImages()
+    fun onViewCreated() {
+        fetchImages()
     }
 
-    private fun getImages() = launch(coroutineContext) {
+    private fun fetchImages() = launch(coroutineContext) {
         progressLiveData.value = ProgressState.Loading
 
         homeRepository.getImages(
