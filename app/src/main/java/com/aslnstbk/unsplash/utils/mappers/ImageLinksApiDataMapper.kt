@@ -7,10 +7,10 @@ class ImageLinksApiDataMapper {
 
     fun map(imageLinksApiData: ImageLinksApiData?): ImageLinks {
         return ImageLinks(
-            self = imageLinksApiData?.self ?: EMPTY_STRING,
-            html = imageLinksApiData?.html ?: EMPTY_STRING,
-            download = imageLinksApiData?.download ?: EMPTY_STRING,
-            download_location = imageLinksApiData?.download_location ?: EMPTY_STRING
+            self = imageLinksApiData?.self.orEmpty(),
+            html = imageLinksApiData?.html.orEmpty(),
+            download = imageLinksApiData?.download.orEmpty(),
+            download_location = imageLinksApiData?.download_location.orEmpty()
         )
     }
 }

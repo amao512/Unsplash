@@ -9,9 +9,7 @@ class ImageTagApiDataMapper {
         tags ?: return emptyList()
 
         return tags.map {
-            ImageTag(
-                title = it.title ?: EMPTY_STRING
-            )
+            ImageTag(title = it.title.orEmpty())
         }
     }
 }

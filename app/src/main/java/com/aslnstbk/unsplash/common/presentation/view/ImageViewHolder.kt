@@ -1,11 +1,10 @@
 package com.aslnstbk.unsplash.common.presentation.view
 
 import android.view.View
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.presentation.models.ImageItem
+import com.aslnstbk.unsplash.databinding.ImageItemBinding
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 
 class ImageViewHolder(
@@ -14,15 +13,15 @@ class ImageViewHolder(
     private val imageClickListener: ImageClickListener
 ) : RecyclerView.ViewHolder(itemView) {
 
-    private val imageView: ImageView = itemView.findViewById(R.id.image_item_image)
+    private val binding = ImageItemBinding.bind(itemView)
 
-    fun onBind(image: ImageItem){
+    fun onBind(image: ImageItem) = with(binding) {
         imageLoader.load(
             url = image.imageUrl,
             target = imageView
         )
 
-        itemView.setOnClickListener {
+        imageView.setOnClickListener {
             imageClickListener.onImageClick(imageId = image.imageId)
         }
     }

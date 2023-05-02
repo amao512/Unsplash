@@ -3,9 +3,9 @@ package com.aslnstbk.unsplash.common.presentation.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.presentation.models.ImageItem
+import com.aslnstbk.unsplash.databinding.ImageItemBinding
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 
 class ImagesLineAdapter(
@@ -38,11 +38,7 @@ class ImagesLineAdapter(
 
     private fun createImageViewHolder(parent: ViewGroup): ImageViewHolder {
         return ImageViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.image_item,
-                parent,
-                false
-            ),
+            ImageItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).root,
             imageLoader,
             imageClickListener
         )

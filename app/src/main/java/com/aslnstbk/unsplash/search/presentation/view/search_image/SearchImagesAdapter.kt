@@ -3,12 +3,13 @@ package com.aslnstbk.unsplash.search.presentation.view.search_image
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.domain.ImageLoader
+import com.aslnstbk.unsplash.databinding.ImageItemBinding
+import com.aslnstbk.unsplash.databinding.SearchMoreLoadingItemBinding
 import com.aslnstbk.unsplash.home.data.ImageClickListener
 import com.aslnstbk.unsplash.search.presentation.models.MoreLoadingItem
-import com.aslnstbk.unsplash.search.presentation.models.SEARCH_IMAGE_ITEM_TYPE
 import com.aslnstbk.unsplash.search.presentation.models.SearchItem
+import com.aslnstbk.unsplash.search.presentation.models.SearchItemType
 import com.aslnstbk.unsplash.search.presentation.view.BaseViewHolder
 import com.aslnstbk.unsplash.search.presentation.view.SearchListener
 
@@ -25,7 +26,7 @@ class SearchImagesAdapter(
         viewType: Int
     ): BaseViewHolder<SearchItem> {
         return when (viewType){
-            SEARCH_IMAGE_ITEM_TYPE -> createSearchImageViewHolder(parent)
+            SearchItemType.SEARCH_IMAGE_ITEM_TYPE.ordinal -> createSearchImageViewHolder(parent)
             else -> createSearchLoadingViewHolder(parent)
         }
     }
@@ -36,7 +37,7 @@ class SearchImagesAdapter(
 
     override fun getItemCount(): Int = searchItemList.size
 
-    override fun getItemViewType(position: Int): Int = searchItemList[position].type
+    override fun getItemViewType(position: Int): Int = searchItemList[position].type.ordinal
 
     fun setList(searchItemList: List<SearchItem>) {
         this.searchItemList.clear()
@@ -64,11 +65,7 @@ class SearchImagesAdapter(
 
     private fun createSearchImageViewHolder(parent: ViewGroup): BaseViewHolder<SearchItem> {
         return SearchImageViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.image_item,
-                parent,
-                false
-            ),
+            ImageItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).root,
             imageLoader,
             imageClickListener
         )
@@ -76,11 +73,7 @@ class SearchImagesAdapter(
 
     private fun createSearchLoadingViewHolder(parent: ViewGroup): BaseViewHolder<SearchItem> {
         return SearchLoadingViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.search_more_loading_item,
-                parent,
-                false
-            ),
+            SearchMoreLoadingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).root,
             searchListener
         )
     }

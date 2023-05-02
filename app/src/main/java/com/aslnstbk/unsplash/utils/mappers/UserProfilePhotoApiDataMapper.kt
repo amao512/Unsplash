@@ -7,9 +7,9 @@ class UserProfilePhotoApiDataMapper {
 
     fun map(userProfilePhotoApiData: UserProfilePhotoApiData?): UserProfilePhoto {
         return UserProfilePhoto(
-            small = userProfilePhotoApiData?.small ?: EMPTY_STRING,
-            medium = userProfilePhotoApiData?.medium ?: EMPTY_STRING,
-            large = userProfilePhotoApiData?.large ?: EMPTY_STRING,
+            small = userProfilePhotoApiData?.small.orEmpty(),
+            medium = userProfilePhotoApiData?.medium.orEmpty(),
+            large = userProfilePhotoApiData?.large.orEmpty(),
         )
     }
 }

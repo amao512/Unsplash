@@ -3,7 +3,7 @@ package com.aslnstbk.unsplash.search.presentation.view.query
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.aslnstbk.unsplash.R
+import com.aslnstbk.unsplash.databinding.SearchHistoryItemBinding
 import com.aslnstbk.unsplash.search.data.models.QueryHistory
 import com.aslnstbk.unsplash.search.presentation.view.SearchListener
 
@@ -39,11 +39,7 @@ class QueryAdapter(
 
     private fun createSearchHistoryViewHolder(parent: ViewGroup): QueryHistoryViewHolder {
         return QueryHistoryViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.search_history_item,
-                parent,
-                false
-            ),
+            SearchHistoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).root,
             searchListener
         )
     }

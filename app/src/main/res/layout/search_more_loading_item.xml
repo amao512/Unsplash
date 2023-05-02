@@ -8,7 +8,7 @@
     android:paddingVertical="@dimen/padding_size_10x">
 
     <ProgressBar
-        android:id="@+id/search_more_loading_item_progress_bar"
+        android:id="@+id/progressBar"
         android:layout_width="@dimen/recycler_progress_bar_size"
         android:layout_height="@dimen/recycler_progress_bar_size"
         android:layout_gravity="center"
@@ -16,7 +16,7 @@
         android:indeterminateTint="@color/colorSecondary" />
 
     <LinearLayout
-        android:id="@+id/search_more_loading_item_error_view"
+        android:id="@+id/errorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -30,7 +30,7 @@
             android:textSize="@dimen/text_size_18x" />
 
         <TextView
-            android:id="@+id/search_more_loading_item_retry_text_view"
+            android:id="@+id/retryTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_size_8x"

@@ -7,11 +7,11 @@ class ImageUrlsApiDataMapper {
 
     fun map(imageUrlsApiData: ImageUrlsApiData?): ImageUrls {
         return ImageUrls(
-            raw = imageUrlsApiData?.raw ?: EMPTY_STRING,
-            full = imageUrlsApiData?.full ?: EMPTY_STRING,
-            regular = imageUrlsApiData?.regular ?: EMPTY_STRING,
-            small = imageUrlsApiData?.small ?: EMPTY_STRING,
-            thumb = imageUrlsApiData?.thumb ?: EMPTY_STRING
+            raw = imageUrlsApiData?.raw.orEmpty(),
+            full = imageUrlsApiData?.full.orEmpty(),
+            regular = imageUrlsApiData?.regular.orEmpty(),
+            small = imageUrlsApiData?.small.orEmpty(),
+            thumb = imageUrlsApiData?.thumb.orEmpty()
         )
     }
 }

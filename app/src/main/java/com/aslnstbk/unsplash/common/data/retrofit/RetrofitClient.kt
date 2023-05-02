@@ -9,8 +9,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
 object RetrofitClient {
-    private const val ACCESS_KEY = BuildConfig.ACCESS_KEY
-    private const val BASE_URL = BuildConfig.BASE_URL
 
     private fun httpClient(context: Context) = OkHttpClient.Builder()
         .addInterceptor {chain ->
@@ -18,7 +16,7 @@ object RetrofitClient {
         val originalHttpUrl: HttpUrl = original.url()
 
         val url: HttpUrl = originalHttpUrl.newBuilder()
-            .addQueryParameter("client_id", ACCESS_KEY)
+            .addQueryParameter("client_id", BuildConfig.ACCESS_KEY)
             .build()
 
         val request = original.newBuilder().url(url).build()
@@ -28,7 +26,7 @@ object RetrofitClient {
 
     fun instance(context: Context): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(httpClient(context).build())
             .addConverterFactory(JacksonConverterFactory.create())
             .build()

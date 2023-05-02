@@ -1,10 +1,7 @@
 package com.aslnstbk.unsplash.search.presentation.view.search_image
 
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
-import com.aslnstbk.unsplash.R
+import com.aslnstbk.unsplash.databinding.SearchMoreLoadingItemBinding
 import com.aslnstbk.unsplash.search.presentation.models.MoreLoadingItem
 import com.aslnstbk.unsplash.search.presentation.models.SearchItem
 import com.aslnstbk.unsplash.search.presentation.view.BaseViewHolder
@@ -17,11 +14,9 @@ class SearchLoadingViewHolder(
     private val searchListener: SearchListener
 ) : BaseViewHolder<SearchItem>(itemView) {
 
-    private val progressBar: ProgressBar = itemView.findViewById(R.id.search_more_loading_item_progress_bar)
-    private val errorView: LinearLayout = itemView.findViewById(R.id.search_more_loading_item_error_view)
-    private val retryTextView: TextView = itemView.findViewById(R.id.search_more_loading_item_retry_text_view)
+    private val binding = SearchMoreLoadingItemBinding.bind(itemView)
 
-    override fun onBind(data: SearchItem) {
+    override fun onBind(data: SearchItem) = with(binding) {
         val isLoading: Boolean = (data as? MoreLoadingItem)?.isLoading ?: return
         val isError: Boolean = (data as? MoreLoadingItem)?.isError ?: return
 
@@ -31,8 +26,8 @@ class SearchLoadingViewHolder(
         }
 
         when (isError) {
-            true -> errorView.show()
-            false -> errorView.hide()
+            true -> errorLayout.show()
+            false -> errorLayout.hide()
         }
 
         retryTextView.setOnClickListener {

@@ -4,13 +4,12 @@ import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aslnstbk.unsplash.common.constants.ArgConstants.ARG_IMAGE_ID
+import com.aslnstbk.unsplash.common.constants.Constants.EMPTY
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.favorite_images.data.models.FavoriteImage
-import com.aslnstbk.unsplash.image_details.data.ImageDownload
 import com.aslnstbk.unsplash.image_details.domain.ImageDetailsRepository
-import com.aslnstbk.unsplash.utils.mappers.EMPTY_STRING
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,8 +20,7 @@ class ImageDetailsViewModel(
     private val mainJob: Job = Job(),
     override val coroutineContext: CoroutineContext = mainJob + Dispatchers.Main,
     private val ioContext: CoroutineContext = mainJob + Dispatchers.IO,
-    private val imageDetailsRepository: ImageDetailsRepository,
-    private val imageDownload: ImageDownload
+    private val imageDetailsRepository: ImageDetailsRepository
 ) : ViewModel(), CoroutineScope {
 
     val imageLiveData: MutableLiveData<ResponseData<Image, String>> = MutableLiveData()
@@ -36,7 +34,7 @@ class ImageDetailsViewModel(
     fun onViewCreated(args: Bundle?) {
         args?.let {
             if (it.containsKey(ARG_IMAGE_ID)) {
-                val imageId = it.getString(ARG_IMAGE_ID, EMPTY_STRING)
+                val imageId = it.getString(ARG_IMAGE_ID, EMPTY)
                 progressLiveData.value = ProgressState.Loading
                 getFavoriteImages(imageId)
             }
@@ -49,13 +47,6 @@ class ImageDetailsViewModel(
         } else {
             addFavoriteImage(image = image)
         }
-    }
-
-    fun onDownloadImage(image: Image) {
-        imageDownload.download(
-            url = image.urls.full,
-            description = image.description
-        )
     }
 
     private fun getFavoriteImages(imageId: String) = launch(coroutineContext) {

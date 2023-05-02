@@ -1,11 +1,12 @@
 package com.aslnstbk.unsplash.utils.extensions
 
 import android.view.View
+import androidx.core.view.isVisible
 
-fun View.show(){
-    this.visibility = View.VISIBLE
+fun View.show() {
+    isVisible = true
 }
 
-fun View.hide(){
-    this.visibility = View.GONE
+fun View.hide() {
+    isVisible = false
 }

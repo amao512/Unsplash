@@ -11,20 +11,21 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.aslnstbk.unsplash.R
 import com.aslnstbk.unsplash.common.constants.ArgConstants.ARG_QUERY
+import com.aslnstbk.unsplash.common.constants.Constants.EMAIL_TEXT_FORMAT
 import com.aslnstbk.unsplash.common.data.ImageViewer
 import com.aslnstbk.unsplash.common.data.model.ProgressState
 import com.aslnstbk.unsplash.common.data.model.ResponseData
 import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.databinding.FragmentImageDetailsBinding
+import com.aslnstbk.unsplash.image_details.data.ImageDownload
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
+import com.aslnstbk.unsplash.main.MainActivity
 import com.aslnstbk.unsplash.utils.extensions.hide
 import com.aslnstbk.unsplash.utils.extensions.show
 import org.apmem.tools.layouts.FlowLayout
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-const val EMAIL_TEXT_FORMAT = "@%s"
 
 class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
 
@@ -33,6 +34,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     private val viewModel: ImageDetailsViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
     private val imageViewer: ImageViewer by inject()
+    private val imageDownload: ImageDownload by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -116,7 +118,11 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
 
     private fun onDownloadButtonClick(image: Image) {
         binding.fragmentImageDetailsButtonDownload.setOnClickListener {
-            viewModel.onDownloadImage(image = image)
+            imageDownload.download(
+                activity = activity as MainActivity,
+                url = image.urls.full,
+                description = image.description
+            )
         }
     }
 

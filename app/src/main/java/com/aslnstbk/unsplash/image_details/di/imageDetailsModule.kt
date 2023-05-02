@@ -13,8 +13,7 @@ val imageDetailsModule = module {
 
     viewModel {
         ImageDetailsViewModel(
-            imageDetailsRepository = get(),
-            imageDownload = get()
+            imageDetailsRepository = get()
         )
     }
 
