@@ -32,7 +32,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingTop="@dimen/padding_size_5x"
@@ -68,10 +68,10 @@
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
         android:indeterminateTint="@color/colorSecondary"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

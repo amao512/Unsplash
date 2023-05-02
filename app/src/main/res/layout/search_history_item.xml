@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_size_16x"
         android:layout_weight="1"
+        android:textColor="@color/colorSecondary"
         android:textSize="@dimen/text_size_18x"
         tools:text="Query" />
 

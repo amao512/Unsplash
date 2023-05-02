@@ -23,7 +23,9 @@ import com.aslnstbk.unsplash.search.presentation.view.query.QueryAdapter
 import com.aslnstbk.unsplash.search.presentation.view.search_image.SearchImagesAdapter
 import com.aslnstbk.unsplash.search.presentation.viewModel.SearchViewModel
 import com.aslnstbk.unsplash.utils.extensions.hide
+import com.aslnstbk.unsplash.utils.extensions.hideKeyboard
 import com.aslnstbk.unsplash.utils.extensions.show
+import com.aslnstbk.unsplash.utils.extensions.showKeyboard
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,6 +57,11 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
         viewModel.onViewCreated(arguments)
     }
 
+    override fun onResume() {
+        super.onResume()
+        context?.showKeyboard(binding.searchEditText)
+    }
+
     override fun onQueryHistoryDelete(
         queryHistory: QueryHistory,
         position: Int
@@ -64,6 +71,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
             queryHistory = queryHistory,
             position = position
         )
+        context?.hideKeyboard(binding.searchEditText)
     }
 
     override fun onQueryHistoryClick(query: String) {
@@ -119,11 +127,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
     private fun onSearch(query: String) = with(binding) {
         viewModel.onSearchImage(query = query)
         recyclerView.adapter = searchImagesAdapter
+        context?.hideKeyboard(searchEditText)
     }
 
     private fun observeViewModel() = with(viewModel) {
         query.observe(viewLifecycleOwner) {
             binding.searchEditText.setText(it)
+            binding.recyclerView.adapter = searchImagesAdapter
         }
         queryHistoryLiveData.observe(viewLifecycleOwner, ::handleSearchHistory)
         imagesLiveData.observe(viewLifecycleOwner, ::handleImages)
@@ -170,8 +180,14 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchListener, Image
 
     private fun handleProgress(progressState: ProgressState) = with(binding) {
         when (progressState) {
-            is ProgressState.Loading -> progressBar.show()
-            is ProgressState.Done -> progressBar.hide()
+            is ProgressState.Loading -> {
+                progressBar.show()
+                recyclerView.hide()
+            }
+            is ProgressState.Done -> {
+                progressBar.hide()
+                recyclerView.show()
+            }
         }
     }
 }

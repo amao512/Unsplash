@@ -43,10 +43,10 @@ class SearchViewModel(
             if (it.containsKey(ARG_QUERY)) {
                 query.value = it.getString(ARG_QUERY)
                 onSearchImage(query.value.orEmpty())
-            } else {
-                getAllSearchHistory()
             }
         }
+
+        getAllSearchHistory()
     }
 
     fun deleteSearchHistory(queryHistory: QueryHistory) = CoroutineScope(Dispatchers.IO).launch {
@@ -61,7 +61,9 @@ class SearchViewModel(
             query = query,
             page = page,
             result = {
-                imagesLiveData.value = ResponseData.Success(getImageItemsList(it.results))
+                imagesLiveData.value = if (it.results.isEmpty()) {
+                    ResponseData.Success(getImageItemsList(it.results))
+                } else ResponseData.Error(it.toString())
                 progressLiveData.value = ProgressState.Done
             },
             fail = {
