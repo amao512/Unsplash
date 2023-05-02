@@ -16,7 +16,7 @@
         android:paddingTop="@dimen/padding_size_16x"
         >
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fragment_image_details_image_owner_photo"
             android:layout_width="@dimen/image_owner_photo_size"
             android:layout_height="@dimen/image_owner_photo_size"
@@ -25,13 +25,13 @@
             tools:src="@drawable/ic_launcher_background"
             />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/fragment_image_details_image_owner_full_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_size_16x"
             android:maxLines="1"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="@dimen/text_size_20x"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/fragment_image_details_image_owner_email"
@@ -41,7 +41,7 @@
             tools:text="Name"
             />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/fragment_image_details_image_owner_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             tools:text="e@mail"
             />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fragment_image_details_button_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             app:layout_constraintTop_toTopOf="@id/fragment_image_details_image_owner_photo"
             />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fragment_image_details_button_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             app:layout_constraintTop_toTopOf="@id/fragment_image_details_image_owner_photo"
             />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fragment_image_details_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,11 +87,11 @@
             android:id="@+id/fragment_image_details_tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/padding_size_10x"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image"
-            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="@dimen/padding_size_10x"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -62,9 +62,9 @@
         android:layout_margin="@dimen/margin_size_16x"
         android:backgroundTint="@color/colorPrimary"
         android:scaleType="center"
+        app:borderWidth="0dp"
         app:rippleColor="@color/colorPrimary"
         app:srcCompat="@drawable/ic_favorite_bold_white"
-        app:borderWidth="0dp"
         />
 
     <ProgressBar

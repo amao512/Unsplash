@@ -2,7 +2,7 @@ package com.aslnstbk.unsplash.image_details.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
+import android.viewbinding.library.fragment.viewBinding
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -17,6 +17,7 @@ import com.aslnstbk.unsplash.common.data.models.Image
 import com.aslnstbk.unsplash.common.domain.ImageLoader
 import com.aslnstbk.unsplash.common.presentation.view.LoadingError
 import com.aslnstbk.unsplash.common.presentation.view.ToolbarBuilder
+import com.aslnstbk.unsplash.databinding.FragmentImageDetailsBinding
 import com.aslnstbk.unsplash.image_details.presentation.viewModel.ImageDetailsViewModel
 import com.aslnstbk.unsplash.main.APP_ACTIVITY
 import com.aslnstbk.unsplash.navigation.IMAGE_ID_BUNDLE_KEY
@@ -33,6 +34,8 @@ const val EMAIL_TEXT_FORMAT = "@%s"
 
 class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
 
+    private val binding: FragmentImageDetailsBinding by viewBinding()
+
     private val imageDetailsViewModel: ImageDetailsViewModel by viewModel()
     private val router: Router by inject()
     private val imageLoader: ImageLoader by inject()
@@ -40,13 +43,6 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     private val loadingError: LoadingError by inject()
 
     private lateinit var toolbar: Toolbar
-    private lateinit var ownerPhotoImageView: ImageView
-    private lateinit var ownerFullNameTextView: TextView
-    private lateinit var ownerEmailTextView: TextView
-    private lateinit var imageImageView: ImageView
-    private lateinit var tagsLayout: FlowLayout
-    private lateinit var favoriteButton: ImageView
-    private lateinit var downloadButton: ImageView
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +54,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViews(view)
+        initViews()
         buildToolbar()
         observeLiveData()
         view.hide()
@@ -68,14 +64,7 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         return arguments?.getString(IMAGE_ID_BUNDLE_KEY, EMPTY_STRING) ?: EMPTY_STRING
     }
 
-    private fun initViews(view: View) {
-        ownerPhotoImageView = view.findViewById(R.id.fragment_image_details_image_owner_photo)
-        ownerFullNameTextView = view.findViewById(R.id.fragment_image_details_image_owner_full_name)
-        ownerEmailTextView = view.findViewById(R.id.fragment_image_details_image_owner_email)
-        imageImageView = view.findViewById(R.id.fragment_image_details_image)
-        tagsLayout = view.findViewById(R.id.fragment_image_details_tags)
-        favoriteButton = view.findViewById(R.id.fragment_image_details_button_favorite)
-        downloadButton = view.findViewById(R.id.fragment_image_details_button_download)
+    private fun initViews() {
         progressBar = APP_ACTIVITY.findViewById(R.id.activity_main_progress_bar)
     }
 
@@ -106,9 +95,9 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         }
     }
 
-    private fun fillData(image: Image) {
-        ownerFullNameTextView.text = image.user.name
-        ownerEmailTextView.text = EMAIL_TEXT_FORMAT.format(image.user.username)
+    private fun fillData(image: Image) = with(binding) {
+        fragmentImageDetailsImageOwnerFullName.text = image.user.name
+        fragmentImageDetailsImageOwnerEmail.text = EMAIL_TEXT_FORMAT.format(image.user.username)
 
         loadImages(image = image)
         setFavoriteImage(isFavorite = image.isFavorite)
@@ -120,19 +109,19 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
         view?.show()
     }
 
-    private fun loadImages(image: Image) {
+    private fun loadImages(image: Image) = with(binding) {
         imageLoader.load(
             url = image.user.profile_photo.small,
-            target = ownerPhotoImageView,
+            target = fragmentImageDetailsImageOwnerPhoto,
             withCenterCrop = false
         )
         imageLoader.load(
             url = image.urls.regular,
-            target = imageImageView,
+            target = fragmentImageDetailsImage,
             withCenterCrop = false
         )
 
-        imageImageView.setOnClickListener {
+        fragmentImageDetailsImage.setOnClickListener {
             imageViewer.show(
                 context = requireContext(),
                 images = listOf(image.urls.regular)
@@ -141,31 +130,33 @@ class ImageDetailsFragment : Fragment(R.layout.fragment_image_details) {
     }
 
     private fun setFavoriteImage(isFavorite: Boolean) = if (isFavorite) {
-        favoriteButton.setBackgroundResource(R.drawable.ic_favorite_bold_red)
+        binding.fragmentImageDetailsButtonFavorite.setBackgroundResource(R.drawable.ic_favorite_bold_red)
     } else {
-        favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border)
+        binding.fragmentImageDetailsButtonFavorite.setBackgroundResource(R.drawable.ic_favorite_border)
     }
 
     private fun onFavoriteButtonClick(image: Image) {
-        favoriteButton.setOnClickListener {
+        binding.fragmentImageDetailsButtonFavorite.setOnClickListener {
             imageDetailsViewModel.onFavoriteButtonClick(image = image)
         }
     }
 
     private fun onDownloadButtonClick(image: Image) {
-        downloadButton.setOnClickListener {
+        binding.fragmentImageDetailsButtonDownload.setOnClickListener {
             imageDetailsViewModel.onDownloadImage(image = image)
         }
     }
 
     private fun fillTags(image: Image) {
+        binding.fragmentImageDetailsTags.removeAllViews()
+
         image.tags.map { tag ->
             val tagTextView = createTagTextView(tag.title)
             tagTextView.setOnClickListener {
                 searchByTag(tag.title)
             }
 
-            tagsLayout.addView(tagTextView)
+            binding.fragmentImageDetailsTags.addView(tagTextView)
         }
     }
 
