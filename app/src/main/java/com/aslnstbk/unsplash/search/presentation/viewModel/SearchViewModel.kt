@@ -62,8 +62,8 @@ class SearchViewModel(
             page = page,
             result = {
                 imagesLiveData.value = if (it.results.isEmpty()) {
-                    ResponseData.Success(getImageItemsList(it.results))
-                } else ResponseData.Error(it.toString())
+                    ResponseData.Error(it.toString())
+                } else ResponseData.Success(getImageItemsList(it.results))
                 progressLiveData.value = ProgressState.Done
             },
             fail = {

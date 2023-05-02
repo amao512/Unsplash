@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#000000</color>
+    <color name="color_primary">#000000</color>
     <color name="colorSecondary">#FFFFFF</color>
     <color name="colorFail">#E60505</color>
     <color name="colorTag">#C3BFBF</color>
     <color name="colorTagText">#000000</color>
     <color name="colorLoading">#F2F2F2</color>
+    <color name="color_black">#000000</color>
 </resources>

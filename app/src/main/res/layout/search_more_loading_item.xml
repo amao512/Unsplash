@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_size_8x"
             android:text="@string/loading_error_retry_text"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/color_black"
             android:textSize="@dimen/text_size_18x"
             android:textStyle="bold" />
     </LinearLayout>
