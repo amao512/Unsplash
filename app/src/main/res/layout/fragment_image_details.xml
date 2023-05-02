@@ -5,16 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".image_details.presentation.ImageDetailsFragment"
-    >
+    tools:context=".image_details.presentation.ImageDetailsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/margin_size_16x"
         android:paddingHorizontal="@dimen/padding_size_16x"
-        android:paddingTop="@dimen/padding_size_16x"
-        >
+        android:paddingTop="@dimen/padding_size_16x">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fragment_image_details_image_owner_photo"
@@ -22,8 +20,7 @@
             android:layout_height="@dimen/image_owner_photo_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_launcher_background"
-            />
+            tools:src="@drawable/ic_launcher_background" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/fragment_image_details_image_owner_full_name"
@@ -31,15 +28,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_size_16x"
             android:maxLines="1"
-            android:textColor="@color/colorTextPrimary"
+            android:textColor="@color/colorSecondary"
             android:textSize="@dimen/text_size_20x"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/fragment_image_details_image_owner_email"
             app:layout_constraintEnd_toStartOf="@id/fragment_image_details_button_favorite"
             app:layout_constraintStart_toEndOf="@id/fragment_image_details_image_owner_photo"
             app:layout_constraintTop_toTopOf="@id/fragment_image_details_image_owner_photo"
-            tools:text="Name"
-            />
+            tools:text="Name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/fragment_image_details_image_owner_email"
@@ -49,8 +45,7 @@
             app:layout_constraintBottom_toBottomOf="@id/fragment_image_details_image_owner_photo"
             app:layout_constraintStart_toStartOf="@id/fragment_image_details_image_owner_full_name"
             app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image_owner_full_name"
-            tools:text="e@mail"
-            />
+            tools:text="e@mail" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fragment_image_details_button_favorite"
@@ -60,8 +55,7 @@
             android:src="@drawable/ic_favorite_border"
             app:layout_constraintBottom_toBottomOf="@id/fragment_image_details_image_owner_photo"
             app:layout_constraintEnd_toStartOf="@id/fragment_image_details_button_download"
-            app:layout_constraintTop_toTopOf="@id/fragment_image_details_image_owner_photo"
-            />
+            app:layout_constraintTop_toTopOf="@id/fragment_image_details_image_owner_photo" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fragment_image_details_button_download"
@@ -70,8 +64,7 @@
             android:src="@drawable/ic_save"
             app:layout_constraintBottom_toBottomOf="@id/fragment_image_details_image_owner_photo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/fragment_image_details_image_owner_photo"
-            />
+            app:layout_constraintTop_toTopOf="@id/fragment_image_details_image_owner_photo" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fragment_image_details_image"
@@ -80,8 +73,7 @@
             android:layout_marginTop="@dimen/margin_size_16x"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image_owner_photo"
-            />
+            app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image_owner_photo" />
 
         <org.apmem.tools.layouts.FlowLayout
             android:id="@+id/fragment_image_details_tags"
@@ -91,8 +83,7 @@
             android:paddingVertical="@dimen/padding_size_10x"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image"
-            />
+            app:layout_constraintTop_toBottomOf="@id/fragment_image_details_image" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

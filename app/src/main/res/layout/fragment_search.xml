@@ -10,5 +10,4 @@
     android:overScrollMode="never"
     android:paddingTop="@dimen/padding_size_5x"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/image_item"
-    />
+    tools:listitem="@layout/image_item" />

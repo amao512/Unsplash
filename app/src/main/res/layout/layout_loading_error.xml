@@ -4,31 +4,27 @@
     android:id="@+id/layout_loading_error_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
-    >
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_error_outline"
-        />
+        android:src="@drawable/ic_error_outline" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/loading_error_text"
-        android:textSize="@dimen/text_size_20x"
-        />
+        android:textSize="@dimen/text_size_20x" />
 
     <TextView
         android:id="@+id/layout_loading_error_retry_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/loading_error_retry_text"
-        android:textSize="@dimen/text_size_18x"
-        android:textColor="@color/colorTextPrimary"
-        android:textStyle="bold"
         android:layout_marginTop="@dimen/margin_size_8x"
-        />
+        android:text="@string/loading_error_retry_text"
+        android:textColor="@color/colorSecondary"
+        android:textSize="@dimen/text_size_18x"
+        android:textStyle="bold" />
 </LinearLayout>

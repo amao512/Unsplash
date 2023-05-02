@@ -4,16 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_favorite_images_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/image_item"
-        />
+        tools:listitem="@layout/image_item" />
 
     <TextView
         android:id="@+id/fragment_favorite_images_text_view_empty"
@@ -21,9 +19,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/fragment_favorite_images_empty"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorSecondary"
         android:textSize="@dimen/text_size_18x"
         android:textStyle="bold"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 </FrameLayout>

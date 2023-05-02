@@ -6,14 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".main.MainActivity"
-    >
+    tools:context=".main.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/activity_main_toolbar"
@@ -21,8 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:menu="@menu/home_toolbar_menu"
-            app:navigationIcon="@drawable/ic_app_logo"
-            >
+            app:navigationIcon="@drawable/ic_app_logo">
 
             <EditText
                 android:id="@+id/activity_main_toolbar_edit_text"
@@ -35,23 +32,20 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="@dimen/text_size_20x"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/activity_main_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
         <include
             android:id="@+id/activity_main_loading_error"
             layout="@layout/layout_loading_error"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -64,15 +58,13 @@
         android:scaleType="center"
         app:borderWidth="0dp"
         app:rippleColor="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_favorite_bold_white"
-        />
+        app:srcCompat="@drawable/ic_favorite_bold_white" />
 
     <ProgressBar
         android:id="@+id/activity_main_progress_bar"
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/colorPrimary"
-        android:visibility="gone"
-        />
+        android:indeterminateTint="@color/colorSecondary"
+        android:visibility="gone" />
 </FrameLayout>

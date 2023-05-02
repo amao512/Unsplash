@@ -11,7 +11,7 @@
     <color name="gray">#7A7979</color>
 
     <color name="colorPrimary">#000000</color>
-    <color name="colorTextPrimary">#000000</color>
+    <color name="colorSecondary">#000000</color>
     <color name="colorFail">#E60505</color>
     <color name="colorTag">#F2F2F2</color>
     <color name="colorTagText">#828282</color>
