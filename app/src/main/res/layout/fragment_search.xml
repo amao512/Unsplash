@@ -13,7 +13,7 @@
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/home_toolbar_menu"
-        app:navigationIcon="@drawable/ic_app_logo">
+        app:navigationIcon="@drawable/ic_new_app_logo">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/searchEditText"
